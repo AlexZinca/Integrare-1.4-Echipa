@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe Design</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white rounded-2xl shadow-lg p-6 w-full max-w-4xl">
+    <!-- Header with user avatars -->
+    <div class="flex justify-end items-center space-x-2 mb-4">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-8 h-8 rounded-full border-2 border-white" />
+      <img src="https://randomuser.me/api/portraits/men/33.jpg" class="w-8 h-8 rounded-full border-2 border-white" />
+      <img src="https://randomuser.me/api/portraits/men/34.jpg" class="w-8 h-8 rounded-full border-2 border-white" />
+      <div class="w-10 h-6 rounded-full bg-gray-300 flex items-center justify-end px-1">
+        <div class="w-4 h-4 rounded-full bg-white"></div>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div id="card-container" class="flex space-x-4 overflow-x-auto pb-4">
+      <!-- Cards will be dynamically rendered here -->
+    </div>
+
+    <!-- Pagination dots -->
+    <div class="flex justify-center mt-4" id="pagination">
+      <!-- Pagination dots -->
+    </div>
+  </div>
+
+  <!-- Modal for PPT viewer -->
+  <div id="ppt-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white w-3/4 h-3/4 rounded-xl relative overflow-hidden">
+      <button onclick="closePPT()" class="absolute top-2 right-2 text-white bg-red-500 px-3 py-1 rounded">X</button>
+      <iframe id="ppt-frame" class="w-full h-full" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'wireframe_cards';
+
+    let cards = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
+      { id: 1, type: 'wireframe', version: 'v.1' },
+      { id: 2, image: 'https://via.placeholder.com/100x60/FFB6C1/000000?text=Design' },
+      { id: 3, ppt: 'https://view.officeapps.live.com/op/embed.aspx?src=https://alexzinca.github.io/Integrare-1.4/2.pptx' }
+    ];
+
+    const maxCardsPerPage = 3;
+    let currentPage = 0;
+
+    function saveToLocalStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+    }
+
+    function openPPT(url) {
+      document.getElementById('ppt-frame').src = url;
+      document.getElementById('ppt-modal').classList.remove('hidden');
+    }
+
+    function closePPT() {
+      document.getElementById('ppt-frame').src = '';
+      document.getElementById('ppt-modal').classList.add('hidden');
+    }
+
+    function renderCards() {
+      const container = document.getElementById('card-container');
+      container.innerHTML = '';
+      const start = currentPage * maxCardsPerPage;
+      const pageCards = cards.slice(start, start + maxCardsPerPage);
+
+      pageCards.forEach(card => {
+        let cardHtml = '';
+        if (card.ppt) {
+          cardHtml = `
+            <div class="rounded-xl bg-white p-4 shadow-md flex flex-col items-center w-40 h-48 cursor-pointer" onclick="openPPT('${card.ppt}')">
+              <div class="w-full h-2/3 bg-gray-200 flex items-center justify-center mb-2">
+                <span class="text-sm text-gray-600">PPT</span>
+              </div>
+              <div class="bg-gray-100 w-full h-4 rounded"></div>
+            </div>
+          `;
+        } else if (card.type === 'wireframe') {
+          cardHtml = `
+            <div class="rounded-xl bg-white p-4 shadow-md flex flex-col items-center w-40 h-48 border border-gray-300">
+              <div class="flex items-center w-full mb-2">
+                <div class="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                <p class="text-sm font-mono">${card.type}</p>
+                <span class="ml-auto bg-green-100 text-green-600 text-xs px-2 py-0.5 rounded-full">${card.version}</span>
+              </div>
+              <div class="flex-1 w-full bg-gray-200 flex items-center justify-center">
+                <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+              </div>
+            </div>
+          `;
+        } else {
+          cardHtml = `
+            <div class="rounded-xl bg-white p-4 shadow-md flex flex-col items-center w-40 h-48">
+              <img src="${card.image}" class="rounded w-full h-2/3 object-cover mb-2" />
+              <div class="bg-gray-100 w-full h-4 rounded"></div>
+            </div>
+          `;
+        }
+        container.insertAdjacentHTML('beforeend', cardHtml);
+      });
+
+      // Add "Add New" card
+      container.insertAdjacentHTML('beforeend', `
+        <div class="rounded-xl bg-white p-4 shadow-md flex flex-col items-center w-40 h-48 border-2 border-blue-500 relative cursor-pointer" onclick="addCard()">
+          <img src="https://via.placeholder.com/100x60/DCDCDC/000000?text=+" class="rounded w-full h-2/3 object-cover mb-2" />
+          <div class="bg-gray-100 w-full h-4 rounded"></div>
+          <div class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-sm">+</div>
+        </div>
+      `);
+    }
+
+    function renderPagination() {
+      const pageCount = Math.ceil(cards.length / maxCardsPerPage);
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+      for (let i = 0; i < pageCount; i++) {
+        pagination.insertAdjacentHTML('beforeend', `
+          <div class="w-3 h-3 rounded-full mx-1 cursor-pointer ${i === currentPage ? 'bg-blue-500' : 'bg-gray-300'}" onclick="goToPage(${i})"></div>
+        `);
+      }
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      renderCards();
+      renderPagination();
+    }
+
+    function addCard() {
+      const newId = cards.length + 1;
+      cards.push({ id: newId, ppt: 'https://view.officeapps.live.com/op/embed.aspx?src=https://alexzinca.github.io/Integrare-1.4/2.pptx' });
+      saveToLocalStorage();
+      goToPage(Math.floor((cards.length - 1) / maxCardsPerPage));
+    }
+
+    renderCards();
+    renderPagination();
+  </script>
+</body>
+</html>
