@@ -1,0 +1,657 @@
+ body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fafb;
+    }
+
+    .swiper {
+  width: 100%;
+  padding-top: 2rem;
+  box-sizing: border-box;
+}
+
+.swiper-slide {
+  overflow: hidden;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  min-width: 180vh;
+  flex-direction: column;
+  justify-content: start;
+}
+
+    .card-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 0 0 1px #c7d2fe, 0 10px 30px rgba(59, 130, 246, 0.2);
+      padding: 3rem 2rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+      padding-bottom: 4rem;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #1e3a8a;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: #2563eb;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fadeIn1, .fadeIn2, .fadeIn3 {
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    .fadeIn1 { animation-delay: 0.2s; }
+    .fadeIn2 { animation-delay: 0.5s; }
+    .fadeIn3 { animation-delay: 0.8s; }
+
+    .tooltip-container {
+      position: relative;
+      display: inline;
+    }
+
+    .tooltip-trigger {
+      color: #2563eb;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 1px dashed #2563eb;
+    }
+
+    .tooltip-box {
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      background: #f8fafc;
+      color: #334155;
+      padding: 1rem;
+      border-left: 4px solid #60a5fa;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 9999;
+    }
+
+    .tooltip-container:hover .tooltip-box {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .tooltip-arrow {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #f8fafc;
+    }
+
+    .contract-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .contract-btn:hover {
+      background: #2563eb;
+    }
+
+    .contract-btn .number {
+      background: white;
+      color: #2563eb;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contract-definition {
+      display: none;
+      background: #f8fafc;
+      border-left: 4px solid #60a5fa;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+      color: #334155;
+      font-size: 1rem;
+    }
+
+    #contractOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #contractOverlayContent {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 90%;
+      max-height: 85%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+      animation: fadeIn 0.4s ease;
+    }
+
+    #contractOverlay img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 12px;
+    }
+
+    #contractOverlayClose {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #334155;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    #contractOverlayClose:hover {
+      color: #ef4444;
+    }
+
+    .contract-step-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  flex: 1;
+  max-width: 250px;
+  border-top: 5px solid #3b82f6;
+}
+
+.contract-step-card:hover {
+  transform: scale(1.05);
+}
+
+.contract-step-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3b82f6;
+  margin-bottom: 0.25rem;
+}
+
+.contract-step-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+}
+
+.contract-step-description {
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+      .step-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-top: 3.5rem;
+      }
+
+      .step-box {
+        width: 22%;
+        position: relative;
+        text-align: center;
+      }
+
+      .step-ribbon {
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.5rem 1rem;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        font-size: 0.95rem;
+        z-index: 2;
+      }
+
+      .ribbon-green {
+        background: #4ade80;
+      }
+
+      .ribbon-blue {
+        background: #2563eb;
+      }
+
+      .step-icon {
+        width: 50px;
+        height: 50px;
+        background: #e2e8f0;
+        border-radius: 50%;
+        margin: 2.5rem auto 1rem auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+
+      .step-text {
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        font-size: 0.9rem;
+        color: #334155;
+        line-height: 1.5;
+        min-height: 260px;
+      }
+
+      @media (max-width: 900px) {
+        .step-box {
+          width: 45%;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .step-box {
+          width: 100%;
+        }
+      }
+
+      .step-flow {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 5rem;
+}
+
+.step-item {
+  flex: 1;
+  min-width: 200px;
+  max-width: 240px;
+  text-align: center;
+  position: relative;
+}
+
+.step-title {
+  display: inline-block;
+  background-color: #22c55e;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: 2rem;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
+}
+
+.step-title.blue {
+  background-color: #2563eb;
+}
+
+.step-line {
+  width: 2px;
+  height: 25px;
+  background-color: #94a3b8;
+  margin: 0 auto;
+}
+
+.step-content {
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+  color: #334155;
+  text-align: left;
+}
+
+
+.swiper-pagination {
+  bottom: 30px !important;
+  position: fixed !important;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 1000;
+}
+
+
+.circle-container {
+  position: relative;
+  width: 650px;
+  height: 650px;
+  margin: 3rem auto;
+}
+
+.connection-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.connection-lines line {
+  stroke: #94a3b8;
+  stroke-width: 2;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.connection-lines line.show {
+  opacity: 1;
+}
+
+.main-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: #3b82f6;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 1rem;
+  z-index: 2;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+.sub-circle {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: #f1f5f9;
+  color: #1e293b;
+  border-radius: 50%;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: all 0.4s ease;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+}
+
+.sub-circle.show {
+  opacity: 1;
+}
+
+.sub-label strong {
+  color: #1e40af;
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.sub-label span {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #334155;
+}
+
+.business-row {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 140px;
+  flex-wrap: wrap;
+}
+
+.circle-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+  cursor: pointer;
+}
+
+.circle-text {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  display: none;
+  font-size: 0.85rem;
+  color: #334155;
+  background: #f1f5f9;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: center;
+  width: 220px;
+  transition: all 0.3s ease;
+}
+
+
+.slide-executie-wrapper {
+  position: relative;
+  min-height: 600px;
+  top:130px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Conținutul slide-ului */
+.slide-executie .card-content {
+  width: 65%;
+  min-height: 400px;
+}
+
+/* Containerul cu rotițe */
+.gear-zone {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Fiecare roată */
+.gear {
+  width: 170px;
+  height: 170px;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+}
+
+.gear-img {
+  width: 100%;
+  height: 100%;
+  animation: spin 1.2s linear paused;
+  transform-origin: center;
+}
+
+.gear.animate .gear-img {
+  animation-play-state: running;
+}
+
+.gear span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+
+/* Poziționare fixă ca în modelul cu 3 roți */
+.gear-exe {
+  top: -20px;
+  right: 420px;
+}
+
+.gear-sm {
+  top: -130px;
+  right: 280px;
+}
+
+.gear-sup {
+  top: -230px;
+  right: 420px;
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gear-info {
+  display: none;
+  background: #f8fafc;
+  border-left: 4px solid #2563eb;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #334155;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  max-width: 600px;
+  margin-top: 4rem;
+  margin-left: 20px;
+  margin-right: 420px;
+}
+
+
+.flip-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 200px); 
+  gap: 80px;
+  justify-content: start; 
+  padding-left: 20px;      
+  padding-right: 20px;
+}
+
+
+
+.flip-card {
+  width: 200px;
+  height: 140px;
+  perspective: 1000px;
+  border-radius: 12px;
+}
+
+
+@media (max-width: 768px) {
+  .flip-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 pe mobil/tabletă */
+  }
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.flip-card:hover .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-align: center;
+}
+
+.flip-front {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.flip-back {
+  background-color: #f8fafc;
+  color: #334155;
+  transform: rotateY(180deg);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}

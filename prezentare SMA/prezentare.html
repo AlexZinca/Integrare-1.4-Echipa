@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Prezentare Contracte</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="script.js"></script>
+</head>
+<body>
+
+  
+<div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+
+
+<div class="swiper-slide">
+  <div class="card-content" style="max-width: 900px; width: 100%; text-align: center; margin-top: 50px;">
+    <h1 style="font-size: 2.5rem; color: #1e3a8a;">Contracte</h1>
+
+    <p style="font-size: 1rem; color: #64748b; margin-left:500px; margin-top:-10px; margin-bottom:-10px;">Student: Chelaru Denisa-Camelia</p>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; align-items: center;">
+      <button class="contract-btn" style="border-radius:2rem" onclick="swiper.slideTo(1)"><span class="number">1</span> Societăți Umane vs Agenți Artificiali</button>
+      <button class="contract-btn" style="border-radius:2rem" onclick="swiper.slideTo(2)"><span class="number">2</span> Baza legală</button>
+      <button class="contract-btn" style="border-radius:2rem" onclick="swiper.slideTo(3)"><span class="number">2.1</span> Etapele contractului: Formarea</button>
+      <button class="contract-btn" style="border-radius:2rem" onclick="swiper.slideTo(4)"><span class="number">2.2</span> Etapele contractului: Execuția</button>
+      <button class="contract-btn" style="border-radius:2rem" onclick="swiper.slideTo(5)"><span class="number">2.3</span> Etapele contractului: Terminarea</button>
+      <button class="contract-btn" style="border-radius:2rem" onclick="swiper.slideTo(6)"><span class="number">3</span> Limbajul și structura unui contract</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.swiper-slide:not(:first-child)').forEach(slide => {
+  const backBtn = document.createElement('button');
+  backBtn.innerText = '← Înapoi la Cuprins';
+  backBtn.style.cssText = 'position:absolute; top:20px; right:20px; background:#e2e8f0; border:none; padding:0.5rem 1rem; border-radius:8px; font-weight:bold; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);';
+  backBtn.onclick = () => swiper.slideTo(0);
+  slide.querySelector('.card-content')?.appendChild(backBtn);
+});
+</script>
+
+    <div class="swiper-slide">
+      <div class="card-content" style="top:150px">
+
+        <div style="position: absolute; top: -20px; left: -20px; background: linear-gradient(to right, #3b82f6, #60a5fa); border-radius: 30px; padding: 0.75rem 1.25rem; color: white; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+          <span style="background: white; color: #3b82f6; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">1</span>
+          Societăți Umane vs Agenți Artificiali
+        </div>
+
+        <div class="fadeIn1" style="padding: 2rem 1.25rem 1rem 1.25rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); background: #fff;">
+          <p style="margin: 0; font-size: 1.05rem; color: #334155; line-height: 1.65;">
+            Contractele sunt utilizate în societatea umană pentru a forma comportarea, pentru a aplana disputele, a asigura drepturile şi pentru a proteja libertăţile.
+          </p>
+        </div>
+
+        <div class="fadeIn2" style="padding: 1rem 1.25rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); background: #fff;">
+          <p style="margin: 0; font-size: 1.05rem; color: #334155; line-height: 1.65;">
+            În sistemul 
+            <span class="tooltip-container">
+              <span class="tooltip-trigger">SM-ALFAr</span>
+              <span class="tooltip-box">
+                <span class="tooltip-arrow"></span>
+                <strong style="color: #1e3a8a;">Despre SM-ALFAr</strong><br />
+                <span style="font-size: 0.9rem;">
+                  SM-ALFAr este un sistem multi-agent în care contractele sunt folosite pentru a coordona comportamentul agenților artificiali.
+                </span>
+              </span>
+            </span>, agenții artificiali preiau rolul actorilor umani.
+          </p>
+        </div>
+
+        <div class="fadeIn3" style="padding: 1rem 1.25rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); background: #fff;">
+          <p style="margin: 0; font-size: 1.05rem; color: #334155; line-height: 1.65;">
+            Contractele între agenți oferă un cadru formal, similar celui uman, care determină comportamentul, drepturile și obligațiile părților implicate.
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+<div class="swiper-slide">
+  <div class="card-content"  style="top:50px">
+    <div style="position: absolute; top: -20px; left: -20px; background: linear-gradient(to right, #3b82f6, #60a5fa); border-radius: 30px; padding: 0.75rem 1.25rem; color: white; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <span style="background: white; color: #3b82f6; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">2</span>
+      Baza legală
+    </div>
+
+    <p style="font-size: 1.05rem; color: #334155; line-height: 1.65;">
+      Cele mai multe chestiuni legale sunt prevăzute în lege. Conform literaturii de specialitate, un contract este o înţelegere între două sau mai multe părţi care creează pentru fiecare în parte o sarcină de făcut sau de nefăcut şi un drept.
+    </p>
+
+    <p style="font-size: 1.05rem; color: #334155; line-height: 1.65;">
+      În orice sistem legal există reguli care stabilesc ce tipuri de contracte se stabilesc.
+      <a href="#" onclick="openOverlay(); return false;" style="color:#2563eb; font-weight:600; margin-left: 0.5rem;">
+        🔍 Vezi ciclul de viață al unui contract
+      </a>
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;">
+  <div class="contract-step-card" onclick="swiper.slideTo(3)" title="Vezi detalii despre Formare în slide-ul 3">
+    <div class="contract-step-number">1</div>
+    <div class="contract-step-title">Formare</div>
+    <div class="contract-step-description">Inițierea și acceptarea termenilor.</div>
+  </div>
+  <div class="contract-step-card" onclick="swiper.slideTo(4)" title="Vezi detalii despre Execuție în slide-ul 4">
+    <div class="contract-step-number">2</div>
+    <div class="contract-step-title">Execuție</div>
+    <div class="contract-step-description">Părțile își îndeplinesc obligațiile.</div>
+  </div>
+  <div class="contract-step-card" onclick="swiper.slideTo(5)" title="Vezi detalii despre Terminare în slide-ul 5">
+    <div class="contract-step-number">3</div>
+    <div class="contract-step-title">Terminare</div>
+    <div class="contract-step-description">Finalizare sau încălcare a contractului.</div>
+  </div>
+</div>
+    <p style="font-size: 1.05rem; color: #334155; line-height: 1.65;">
+      Un contract valid trebuie realizat în faza de formare. În timpul execuţiei dacă se observă o participare defectuoasă a unei părţi pot rezulta ofense care de obicei solicită a fi remediate. Terminarea unui contract poate apărea prin finalizare sau prin încălcare. Încălcarea este o terminare anormală şi de obicei implică un proces de litigiu.
+    </p>
+  </div>
+</div>
+
+
+
+<div class="swiper-slide">
+  <div class="card-content" style="top:80px; max-height: 1400px;">
+    <div style="position: absolute; top: -20px; left: -20px; background: linear-gradient(to right, #3b82f6, #60a5fa); border-radius: 30px; padding: 0.75rem 1.25rem; color: white; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+          <span style="background: white; color: #3b82f6; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">2.1</span>
+        Etapele contractului: Formarea
+        </div>
+        <p style="font-size: 1.05rem; color: #334155; margin-bottom: 0rem;">
+  Această etapă implică mai mulți pași:
+</p>
+
+    <div class="flip-grid">
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">Negociere</div>
+          <div class="flip-back">
+            Formarea este un proces de negociere în care părţile implicate încearcă să ajungă la o înţelegere bazată pe termenii contractului.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">Ontologie</div>
+          <div class="flip-back">
+            Ontologia este necesară pentru a stabili dacă agenţii se referă la acelaşi termen în cadrul negocierii.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">Strategie</div>
+          <div class="flip-back">
+            Strategia este necesara pentru a asigura un maxim de profit pentru fiecare parte.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">Ofertă</div>
+          <div class="flip-back" style="font-size: 0.8rem;">
+            Contractele se creează printr-o ofertă urmată de o acceptare. O ofertă poate fi urmată de o contra-ofertă, care la rândul ei poate genera o contra-ofertă şi aşa mai departe. Procesul se termină când una din părţi emite o
+acceptare. O ofertă, odată emisă, poate fi retrasă înainte de a fi acceptată. Ofertele au termene limita, deci pot expira.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">Acceptare</div>
+          <div class="flip-back">
+            Acceptarea validează și dă viață contractului. Acesta  începe din momentul în care acceptarea ajunge la ofertant.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">SM-ALFAr</div>
+          <div class="flip-back">
+            În abordarea SM-ALFAr o ofertă este făcută fără a se specifica un termen limită deoarece se presupune un răspuns prompt din partea agenţilor. Acest fapt implică de fapt un răspuns într-un interval rezonabil, care este dat de timpul de răspuns din partea sistemului.
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">Alipire</div>
+          <div class="flip-back" style="font-size: 0.8rem;">
+            O alternativă la obţinerea unui acord (diferită de acceptarea ofertei) este alipirea la anumiţi termeni contractuali care sunt expres menţionaţi. Este specifică contractelor între mai mulţi parteneri. În acest caz, părţile sunt de acord cu termenii contractuali şi îi comunică prin diverse
+modalităţi. Contractul devine efectiv din momentul în care ultimul partener îl semnează. 
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">Etică</div>
+          <div class="flip-back">
+            Proasta înţelegere a termenilor sau adevarul deformat afectează procesul. Se impune ca părțile să nu facă declarații false.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="swiper-slide">
+  <div class="card-content" style="top:80px; height:500px; width: 1000px;">
+    <div style="position: absolute; top: -20px; left: -20px; background: linear-gradient(to right, #3b82f6, #60a5fa); border-radius: 30px; padding: 0.75rem 1.25rem; color: white; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <span style="background: white; color: #3b82f6; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">2.2</span>
+      Etapele contractului: Execuție
+    </div>
+
+    <div class="business-row">
+      <div class="circle-step" onclick="toggleStep(this)">
+        <div class="circle-text">Execuție</div>
+        <div class="step-desc">Execuția este faza care corespunde aplicării unui contract. Este de așteptat ca în această etapă să fie respectați termenii stabiliți.
+</div>
+      </div>
+
+      <div class="circle-step" onclick="toggleStep(this)">
+        <div class="circle-text">SM-ALFAr</div>
+        <div class="step-desc">În cazul SM-ALFAr, agenții trebuie să respecte condițiile pe care s-au angajat să le îndeplinească în timpul formării contractului.
+</div>
+      </div>
+
+      <div class="circle-step" onclick="toggleStep(this)">
+        <div class="circle-text">Supervizare</div>
+        <div class="step-desc">Pentru a verifica dacă un contract se desfășoară corect, sunt necesare operații de supervizare specifice fiecărui contract.
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="swiper-slide slide-executie">
+
+  <div class="slide-executie-wrapper">
+     
+    
+   <div class="card-content">
+    <div style="position: absolute; top: -20px; left: -20px; background: linear-gradient(to right, #3b82f6, #60a5fa); border-radius: 30px; padding: 0.75rem 1.25rem; color: white; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+          <span style="background: white; color: #3b82f6; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">2.3</span>
+          Etapele contractului: Terminarea
+        </div>
+    <p style="max-width: 600px; line-height: 1.6; font-size: 1rem;">Un contract poate fi încheiat în condiţii normale sau anormale. Un contract terminat normal (prin eliberare) poate să apară prin execuție, prin acordul ambelor părți sau prin intervenția legii. 
+    Un contract se termină anormal când una din părţi nu respectă termenii.</p>
+    <p style="max-width: 600px; line-height: 1.6; font-size: 0.7rem; color:gray; margin-top: -1rem;">
+Apasă pe pe pictogramele din dreapta pentru detalii despre fiecare modalitate de terminare normală a contractului.
+    </p>
+    <div id="gearInfoBox" class="gear-info"></div>
+  </div>
+
+  <div class="gear-zone">
+    <div class="gear gear-exe" onclick="activateGear(0, this)">
+      <img src="img/gear.svg" class="gear-img" />
+      <span>Execuție</span>
+    </div>
+    <div class="gear gear-sm" onclick="activateGear(1, this)">
+      <img src="img/gear.svg" class="gear-img" />
+      <span>Acordul ambelor părți</span>
+    </div>
+    <div class="gear gear-sup" onclick="activateGear(2, this)">
+      <img src="img/gear.svg" class="gear-img" />
+      <span>Intervenția legii</span>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="swiper-slide">
+  <div class="card-content" style="width: 1200px; height: 600px; position: relative; top: 50px;">
+    <div style="position: absolute; top: -20px; left: -20px; background: linear-gradient(to right, #3b82f6, #60a5fa); border-radius: 30px; padding: 0.75rem 1.25rem; color: white; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <span style="background: white; color: #3b82f6; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">3</span>
+      Limbajul și structura unui contract
+    </div>
+
+    <div style="margin: 2rem auto 0 auto; background: #eff6ff; border-left: 5px solid #3b82f6; padding: 1.25rem 1.5rem; border-radius: 12px; max-width: 850px; font-size: 0.95rem; color: #1e293b; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+      <strong style="color: #1d4ed8;">Limbaj contractual:</strong><br />
+      Contractele trebuie să utilizeze termeni neechivoci pentru a evita neînțelegerile. Deoarece limbajul natural conține ambiguități, se preferă folosirea unui limbaj formal. Contractele electronice pot evita acest aspect prin utilizarea unui limbaj care, prin definiție, nu prezintă ambiguități.
+    </div>
+
+    <div style="margin: 2rem auto 0 auto; background: #eff6ff; border-left: 5px solid #3b82f6; padding: 1.25rem 1.5rem; border-radius: 12px; max-width: 850px; font-size: 0.95rem; color: #1e293b; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+      <strong style="color: #1d4ed8;">Structura unui contract:</strong><br />
+    
+    <p style="text-align:center; color: #334155; margin-top: 2.5rem; font-size: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+      Explorează componentele esențiale ale unui contract – 
+      <span onclick="openContractOverlay()" style="color:#2563eb; font-weight:600; cursor:pointer; border-bottom: 1px dashed #2563eb;">
+        apasă aici pentru vizualizare 
+      </span>
+    </p>
+    </div>
+
+    
+  </div>
+</div>
+
+
+<div class="swiper-slide">
+  <div class="card-content" style="display: flex; justify-content: center; align-items: center; height: 400px; width:800px; margin-top:100px; background: #f8fafc;">
+    <div style="
+      background: linear-gradient(to right, #3b82f6, #60a5fa);
+      padding: 3rem 5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    ">
+      <h1 style="color: white; font-size: 2.5rem; margin: 0;">Vă mulțumesc!</h1>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-pagination"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper(".mySwiper", {
+    direction: "horizontal",
+    loop: false,
+    spaceBetween: 50,
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" }
+  });
+
+  function toggleDefinition(id) {
+    const el = document.getElementById(id);
+    el.style.display = el.style.display === "block" ? "none" : "block";
+  }
+
+  function openOverlay() {
+    document.getElementById("contractOverlay").style.display = "flex";
+  }
+
+  function closeOverlay() {
+    document.getElementById("contractOverlay").style.display = "none";
+  }
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeOverlay();
+  });
+</script>
+
+<div id="contractOverlay">
+  <div id="contractOverlayContent">
+    <span id="contractOverlayClose" onclick="closeOverlay()">✖</span>
+    <img src="img/ciclu-contract.png" alt="Ciclul de viață al unui contract">
+    <p style="text-align:center; font-style:italic; margin-top: 1rem; color: #334155;">Fig. 2.16 – Ciclul de viață al unui contract</p>
+  </div>
+</div>
+
+</body>
+
+<div id="contractOverlayDiagram" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:9999; justify-content:center; align-items:center;">
+  <div style="position:relative; background:white; padding:2rem; border-radius:20px; max-width:95%; max-height:90vh; overflow:auto; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+
+    <button onclick="closeContractOverlay()" style="position:absolute; top:10px; right:15px; font-size:1.5rem; background:none; border:none; cursor:pointer;">✖</button>
+
+    <div class="circle-container">
+      <svg class="connection-lines" viewBox="0 0 650 650">
+        <g id="lines"></g>
+      </svg>
+      <div class="main-circle" id="mainCircleOverlay" onclick="revealCirclesOverlay(this)">Apasă aici pentru<br>structura contractului</div>
+    </div>
+
+  </div>
+</div>
+
+</html>
