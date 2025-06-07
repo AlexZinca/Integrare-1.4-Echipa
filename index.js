@@ -6,17 +6,15 @@ const cors = require('cors');
 dotenv.config();
 const app = express();
 
-//  Middleware-uri
-app.use(express.json());
-
-//  FIX CORS — permite cereri de oriunde (sau setează un domeniu specific mai jos)
+// ✅ FIX CORS: Permite orice origine (sau setează doar domeniul tău în `origin`)
 app.use(cors({
-  origin: 'https://alexzinca.github.io', // sau înlocuiește cu 'https://alexzinca.github.io' pentru securitate
+  origin: '*',
   methods: ['POST'],
   allowedHeaders: ['Content-Type']
 }));
 
-//  Endpoint pentru frontend
+app.use(express.json());
+
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
 
@@ -48,8 +46,8 @@ app.post('/chat', async (req, res) => {
   }
 });
 
-//  Port din Render sau fallback local
+// 🔥 Port corect pentru Render
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(` Serverul rulează pe portul ${PORT}`);
+  console.log(`✅ Serverul rulează pe portul ${PORT}`);
 });
