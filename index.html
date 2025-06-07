@@ -305,32 +305,32 @@
   }
   </style>
   <script defer>
-    async function askChatGPT() {
-      const query = document.getElementById("search-input").value;
-      if (!query.trim()) return;
-      const output = document.getElementById("chatgpt-answer");
-      output.textContent = "Se generează răspunsul...";
-      output.classList.remove("hidden");
+async function askChatGPT() {
+  const query = document.getElementById("search-input").value;
+  if (!query.trim()) return;
 
-      try {
-        const res = await fetch("https://integrare-1-4-2.onrender.com/chat", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    message: query
-  })
-});
+  const output = document.getElementById("chatgpt-answer");
+  output.textContent = "Se generează răspunsul...";
+  output.classList.remove("hidden");
 
+  try {
+    const res = await fetch("https://integrare-1-4-2.onrender.com/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: query })
+    });
 
-        const data = await res.json();
-        output.textContent = data.choices?.[0]?.message?.content || "Nu s-a putut obține răspunsul.";
-      } catch (e) {
-        output.textContent = "Eroare la comunicarea cu ChatGPT.";
-      }
-    }
-    
+    const data = await res.json();
+    console.log("REZ GPT:", data);
+    output.textContent = data.reply || "Nu s-a putut obține răspunsul.";
+  } catch (e) {
+    output.textContent = "Eroare la comunicarea cu ChatGPT.";
+    console.error("Eroare fetch:", e);
+  }
+}
+
     function downloadPDF(url, filename) {
       const link = document.createElement('a');
       link.href = url;
