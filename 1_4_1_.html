@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Lifecycle Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --claude-bg: #f7f7f8;
+            --claude-surface: #ffffff;
+            --claude-border: #e5e7eb;
+            --claude-text: #2d3748;
+            --claude-text-light: #4a5568;
+            --claude-accent: #d97706;
+            --claude-accent-light: #f59e0b;
+            --claude-blue: #3b82f6;
+            --claude-success: #10b981;
+            --claude-error: #ef4444;
+            --claude-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --claude-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--claude-bg);
+            color: var(--claude-text);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Claude Style */
+        .header {
+            padding: 40px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(207deg, var(--claude-accent), #f59e0b, #ffffff);
+            animation: shimmer 10s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+
+            0%,
+            100% {
+                transform: translateX(-100%);
+            }
+
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            margin-bottom: 12px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--claude-text-light);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            padding: 40px 0;
+        }
+
+        .content-grid {
+            display: grid;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .sidebar {
+            background: var(--claude-surface);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--claude-shadow);
+            border: 1px solid var(--claude-border);
+            height: fit-content;
+            top: 20px;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--claude-text);
+            border-bottom: 2px solid var(--claude-accent);
+            padding-bottom: 8px;
+        }
+
+        .contract-types {
+            margin-bottom: 32px;
+        }
+
+        .contract-type {
+            background: var(--claude-bg);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contract-type::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--claude-accent);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: bottom;
+        }
+
+        .contract-type:hover::before {
+            transform: scaleY(1);
+        }
+
+        .contract-type:hover {
+            border-color: var(--claude-accent);
+            box-shadow: var(--claude-shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .contract-type h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--claude-accent);
+            margin-bottom: 8px;
+        }
+
+        .contract-type p {
+            color: var(--claude-text-light);
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+
+        .btn {
+            background: var(--claude-accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--claude-accent-light);
+            transform: translateY(-1px);
+            box-shadow: var(--claude-shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--claude-surface);
+            color: var(--claude-text);
+            border: 1px solid var(--claude-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--claude-bg);
+            border-color: var(--claude-accent);
+        }
+
+        /* Diagram Section */
+        .diagram-container {
+            background: var(--claude-surface);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--claude-shadow);
+            border: 1px solid var(--claude-border);
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .diagram-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .diagram-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            margin: 0;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--claude-bg);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--claude-text-light);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--claude-success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Enhanced Diagram */
+        .contract-diagram {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            border: 2px solid var(--claude-border);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .diagram-node {
+            position: absolute;
+            background: var(--claude-surface);
+            color: var(--claude-text);
+            padding: 16px 24px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--claude-shadow);
+            border: 2px solid var(--claude-border);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .diagram-node:hover {
+            transform: scale(1.08);
+            box-shadow: var(--claude-shadow-lg);
+            border-color: var(--claude-accent);
+            background: var(--claude-accent);
+            color: white;
+        }
+
+        .diagram-node.active {
+            background: var(--claude-accent);
+            color: white;
+            border-color: var(--claude-accent);
+            transform: scale(1.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Exact positioning from image */
+        .start-node {
+            top: 50px;
+            left: 50px;
+            background: var(--claude-success);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            min-width: 24px;
+            border: 3px solid var(--claude-success);
+        }
+
+        .end-node {
+            bottom: 50px;
+            right: 50px;
+            background: var(--claude-text);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            min-width: 24px;
+            border: 3px solid var(--claude-text);
+        }
+
+        .formare {
+            top: 80px;
+            left: 120px;
+        }
+
+        .executie {
+            top: 80px;
+            left: 300px;
+        }
+
+        .contract-valid {
+            top: 20px;
+            left: 460px;
+            font-size: 0.8rem;
+            background: var(--claude-blue);
+            color: white;
+            border-color: var(--claude-blue);
+        }
+
+        .eliberare {
+            top: 150px;
+            left: 540px;
+        }
+
+        .breach {
+            top: 220px;
+            left: 460px;
+            background: var(--claude-error);
+            color: white;
+            border-color: var(--claude-error);
+        }
+
+        .litigiu {
+            top: 220px;
+            left: 620px;
+        }
+
+        .remedii {
+            bottom: 80px;
+            left: 120px;
+        }
+
+        .proasta-reprezentare {
+            bottom: 180px;
+            left: 50px;
+            font-size: 0.8rem;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* Connection Lines */
+        .connection-line {
+            position: absolute;
+            background: var(--claude-border);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .connection-line.active {
+            background: var(--claude-accent);
+            box-shadow: 0 0 10px rgba(217, 119, 6, 0.3);
+        }
+
+        .line-horizontal {
+            height: 2px;
+        }
+
+        .line-vertical {
+            width: 2px;
+        }
+
+        .line-diagonal {
+            height: 2px;
+            transform-origin: left center;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            z-index: 2;
+        }
+
+        .arrow-right {
+            border-left: 8px solid var(--claude-border);
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        .arrow-down {
+            border-top: 8px solid var(--claude-border);
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            background: var(--claude-bg);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 24px;
+            display: none;
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .info-panel.active {
+            display: block;
+        }
+
+        .info-panel h3 {
+            color: var(--claude-accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-panel p {
+            color: var(--claude-text-light);
+            line-height: 1.7;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 32px 0;
+            background: var(--claude-bg);
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid var(--claude-border);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-text {
+            font-weight: 500;
+            color: var(--claude-text);
+        }
+
+        .progress-percentage {
+            font-size: 0.9rem;
+            color: var(--claude-text-light);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--claude-border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--claude-success), var(--claude-accent));
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+
+        /* Contract Sections */
+        .sections-container {
+            background: var(--claude-surface);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--claude-shadow);
+            border: 1px solid var(--claude-border);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .sections-header {
+            margin-bottom: 24px;
+        }
+
+        .sections-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            border-bottom: 2px solid var(--claude-accent);
+            margin-bottom: 8px;
+        }
+
+        .sections-header p {
+            color: var(--claude-text-light);
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Carduri secțiuni comune */
+        .section-card,
+        .section-card2,
+        .section-card4,
+        .section-card3 {
+            background: var(--claude-bg);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Spațiere personalizată (dacă ai nevoie) */
+        .section-card2 {
+            margin-bottom: 20px;
+        }
+
+        .section-card3 {
+            margin-top: 20px;
+        }
+
+        .section-card4 {
+            background-color: rgba(217, 119, 6, 0.3);
+            margin-bottom: 20px;
+        }
+
+        /* Efect decorativ pe hover cu ::before */
+        .section-card::before,
+        .section-card2::before,
+        .section-card4::before,
+        .section-card3::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--claude-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        /* Activează bara decorativă la hover */
+        .section-card:hover::before,
+        .section-card2:hover::before,
+        .section-card4:hover::before,
+        .section-card3:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Hover styling pentru carduri */
+        .section-card:hover,
+        .section-card2:hover,
+        .section-card4:hover,
+        .section-card3:hover {
+            border-color: var(--claude-accent);
+            transform: translateY(-2px);
+            box-shadow: var(--claude-shadow-lg);
+        }
+
+        /* Conținutul textului */
+        .section-card h3,
+        .section-card2 h3,
+        .section-card4 h3,
+        .section-card3 h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-card p,
+        .section-card2 p,
+        .section-card4 p,
+        .section-card3 p {
+            color: var(--claude-text-light);
+            font-size: 0.9rem;
+        }
+
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .diagram-container {
+                overflow-x: auto;
+            }
+
+            .contract-diagram {
+                min-width: 800px;
+            }
+
+            .controls {
+                justify-content: center;
+            }
+        }
+
+        /* Floating notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--claude-surface);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: var(--claude-shadow-lg);
+            z-index: 1000;
+            transform: translateX(300px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--claude-success);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--claude-blue);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 300;
+        }
+
+        .flowchart-container {
+            height: 280px;
+            margin-left: 50px;
+            margin-right: 50px;
+            position: relative;
+            overflow: visible;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .flowchart-node {
+            position: absolute;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 70px;
+            background: white;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .flowchart-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-color: #d97706;
+        }
+
+        .flowchart-node.active {
+            background: #d97706;
+            color: white;
+            border-color: #d97706;
+        }
+
+        .node-circle {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2c3e50;
+            color: white;
+            border: 2px solid #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+            min-width: auto;
+        }
+
+        .node-diamond {
+            transform: rotate(45deg);
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .node-diamond::after {
+            content: "◊";
+            transform: rotate(-45deg);
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .node-additional {
+            background: rgba(217, 119, 6, 0.3);
+            border-color: rgba(217, 119, 6, 0.3);
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 10px;
+        }
+
+        .node-start {
+            top: 100px;
+            left: 20px;
+        }
+
+        .node-formare {
+            top: 100px;
+            left: 110px;
+        }
+
+        .node-executie {
+            top: 100px;
+            left: 230px;
+        }
+
+        .node-diamond {
+            top: 100px;
+            left: 330px;
+        }
+
+        .node-eliberare {
+            top: 50px;
+            left: 470px;
+        }
+
+        .node-breach {
+            top: 150px;
+            left: 470px;
+        }
+
+        .node-litigiu {
+            top: 150px;
+            left: 590px;
+        }
+
+        .node-remedii {
+            top: 220px;
+            left: 290px;
+        }
+
+
+        .node-end {
+            top: 100px;
+            left: 710px;
+        }
+
+        .node-end-remedii {
+            top: 215px;
+            left: 490px;
+        }
+
+
+        .node-contract-valid {
+            top: 50px;
+            left: 170px;
+        }
+
+        .node-reprezentare-proasta {
+            top: 185px;
+            left: 90px;
+        }
+
+        .arrow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(1) {
+            d: path("M 60 120 Q 85 120 110 120");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(2) {
+            d: path("M 180 120 Q 205 120 230 120");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(3) {
+            d: path("M 300 120 Q 325 120 350 120");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(4) {
+            d: path("M 370 105 Q 420 60 470 75");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(5) {
+            d: path("M 370 135 Q 420 180 470 165");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(6) {
+            d: path("M 540 70 Q 625 90 710 115");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(7) {
+            d: path("M 540 170 Q 565 170 590 170");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(8) {
+            d: path("M 660 165 Q 685 135 710 125");
+        }
+
+        .arrow-svg path.curved-line-dashed:nth-of-type(1) {
+            d: path("M 205 100 Q 205 85 205 75");
+        }
+
+
+        .curved-line {
+            stroke: #2c3e50;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .curved-line.active {
+            stroke: #d97706;
+            stroke-width: 3;
+            opacity: 1;
+            filter: drop-shadow(0 0 4px rgba(102, 126, 234, 0.4));
+        }
+
+        .curved-line.animated {
+            stroke-dasharray: 8;
+            animation: flow 2s linear infinite;
+        }
+
+        .curved-line-dashed {
+            stroke: rgb(217 119 6 / 47%);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 4, 4;
+            stroke-linecap: round;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .curved-line-dashed.active {
+            stroke: #f3cd2177;
+            opacity: 1;
+            animation: flow-dashed 1.5s linear infinite;
+        }
+
+        @keyframes flow {
+            0% {
+                stroke-dashoffset: 0;
+            }
+
+            100% {
+                stroke-dashoffset: -16;
+            }
+        }
+
+        @keyframes flow-dashed {
+            0% {
+                stroke-dashoffset: 0;
+            }
+
+            100% {
+                stroke-dashoffset: -8;
+            }
+        }
+
+        /* Arrow markers */
+        .arrow-marker {
+            fill: #2c3e50;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .arrow-marker.active {
+            fill: #d97706;
+            opacity: 1;
+        }
+
+        /* Labels - smaller and less prominent */
+        .label {
+            position: absolute;
+            font-size: 10px;
+            color: #999;
+            font-style: italic;
+            font-weight: 400;
+            z-index: 5;
+            background: rgba(248, 249, 250, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .progress-percentage {
+            font-weight: bold;
+            color: #d97706;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d97706, #e2cb8c);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .info-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            min-height: 120px;
+        }
+
+        .info-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-panel p {
+            color: #6c757d;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .contract-type p {
+            display: none;
+            margin-top: 10px;
+            color: var(--claude-text-light);
+            font-size: 0.9rem;
+        }
+
+        .contract-type.expanded p {
+            display: block;
+        }
+
+        .section-card p {
+            display: none;
+            margin-top: 10px;
+            color: var(--claude-text-light);
+            font-size: 0.9rem;
+        }
+
+        .section-card.expanded p {
+            display: block;
+        }
+
+        .section-card p,
+        .section-card2 p,
+        .section-card3 p,
+        .section-card4 p {
+            display: none;
+            margin-top: 10px;
+            color: var(--claude-text-light);
+            font-size: 0.9rem;
+        }
+
+        .section-card.expanded p,
+        .section-card2.expanded p,
+        .section-card3.expanded p,
+        .section-card4.expanded p {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>1.4.1 Baza legală</h1>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="main-wrapper">
+            <div class="content-grid">
+                <div class="sidebar">
+                    <p style="margin-bottom: 24px; color: var(--claude-text-light); font-size: 0.95rem;">
+                        Cele mai multe chestiuni legale sunt prevăzute în lege. Conform literaturii de specialitate un
+                        contract este o înţelegere între două sau mai multe părţi care crează pentru fiecare în parte o
+                        sarcină de făcut sau de nefăcut şi un drept. Există mai multe tipuri de contracte, dar, în
+                        această lucrare au fost considerate doar contractele generice multilaterale şi contractele de
+                        adeziune.
+                    </p>
+
+                    <div class="contract-types">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 16px; color: var(--claude-text);">Tipuri de
+                            Contracte</h3>
+                        <div class="sections-grid">
+                            <div class="contract-type" data-type="adeziune" onclick="showAndToggleBothContracts()">
+                                <h3>Contract de Adeziune</h3>
+                                <p>Un contract de adeziune este un contract standard a cărui formă este dată în general
+                                    de către furnizorul de produse sau servicii fără a le oferi acestora posibilitatea
+                                    reală de negociere, stabilind de fapt în ce condiţii aceştia pot obţine produsele
+                                    sau serviciile dorite.</p>
+                            </div>
+
+                            <div class="contract-type" data-type="multilateral" onclick="showAndToggleBothContracts()">
+
+                                <h3>Contract Multilateral</h3>
+                                <p>Contractele multilaterale sunt de fapt contracte normale care implică mai mult de
+                                    două părţi, multe dintre acestea având aceleaşi condiţii, iar procesul de negociere
+                                    este mult mai complex.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-header">
+                        <h2>Ciclul de viaţă al unui contract - diagrama interactivă (Figura 2.16)</h2>
+                    </div>
+                    <div class="flowchart-container">
+                        <!-- SVG for curved lines -->
+                        <svg class="arrow-svg">
+                            <!-- Define arrow markers -->
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5"
+                                    orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" class="arrow-marker" />
+                                </marker>
+                                <marker id="arrowhead-active" markerWidth="10" markerHeight="7" refX="9" refY="3.5"
+                                    orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" class="arrow-marker active" />
+                                </marker>
+                            </defs>
+
+                            <!-- Start to Formare -->
+                            <path d="M 60 100 Q 75 100 90 100" class="curved-line" id="arrow-start-formare" />
+
+                            <!-- Formare to Execuție -->
+                            <path d="M 160 100 Q 175 100 190 100" class="curved-line" id="arrow-formare-executie" />
+
+                            <!-- Execuție to Diamond -->
+                            <path d="M 260 100 Q 275 100 290 100" class="curved-line" id="arrow-executie-decizie" />
+
+                            <!-- Diamond to Eliberare (curved upward) -->
+                            <path d="M 310 85 Q 340 50 380 65" class="curved-line" id="arrow-decizie-eliberare" />
+
+                            <!-- Diamond to Breach (curved downward) -->
+                            <path d="M 310 115 Q 340 150 380 140" class="curved-line" id="arrow-decizie-breach" />
+
+                            <!-- Eliberare to End (curved) -->
+                            <path d="M 450 65 Q 510 50 570 85" class="curved-line" id="arrow-eliberare-end" />
+
+                            <!-- Breach to Litigiu -->
+                            <path d="M 450 140 Q 465 140 480 140" class="curved-line" id="arrow-breach-litigiu" />
+
+                            <!-- Litigiu to End (curved upward) -->
+                            <path d="M 550 140 Q 560 120 570 115" class="curved-line" id="arrow-litigiu-end" />
+
+                            <!-- Contract Valid (additional element - curved) -->
+                            <path d="M 210 85 Q 210 145 210 65" class="curved-line-dashed" id="arrow-contract-valid" />
+
+                            <path d="M 230 200 Q 275 200 200 200" class="curved-line-dashed"
+                                id="arrow-proasta-reprezentare" />
+
+                            <path d="M 360 240 Q 375 240 490 240" class="curved-line" id="arrow-remedii-end" />
+
+                            <path d="M 300 115 Q 200 200 290 220" class="curved-line" id="arrow-executie-remedii" />
+
+                        </svg>
+
+                        <!-- Main flow nodes -->
+                        <div class="flowchart-node node-circle node-start" onclick="showPhaseInfo('start')"></div>
+                        <div class="flowchart-node node-formare" onclick="showPhaseInfo('formare')">Formare</div>
+                        <div class="flowchart-node node-executie" onclick="showPhaseInfo('executie')">Execuție</div>
+                        <div class="flowchart-node node-diamond" onclick="showPhaseInfo('decizie')"
+                            title="Punct de decizie"></div>
+                        <div class="flowchart-node node-eliberare" onclick="showPhaseInfo('eliberare')">Eliberare</div>
+                        <div class="flowchart-node node-breach" onclick="showPhaseInfo('breach')">Breach</div>
+                        <div class="flowchart-node node-litigiu" onclick="showPhaseInfo('litigiu')">Litigiu</div>
+                        <div class="flowchart-node node-remedii" onclick="showPhaseInfo('remedii')">Remedii</div>
+                        <div class="flowchart-node node-circle node-end-remedii" onclick="showPhaseInfo('end')"></div>
+
+
+                        <!-- Single End node -->
+                        <div class="flowchart-node node-circle node-end" onclick="showPhaseInfo('end')"></div>
+
+                        <!-- Additional element -->
+                        <div class="flowchart-node node-additional node-contract-valid"
+                            onclick="showPhaseInfo('contractvalid')">Contract Valid</div>
+
+                        <div class="flowchart-node node-additional node-reprezentare-proasta"
+                            onclick="showPhaseInfo('contractvalid')">Proastă reprezentare</div>
+
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span class="progress-text">Progres simulare</span>
+                            <span class="progress-percentage" id="progressPercentage">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+
+                    <div class="section-card4" onclick="highlightSection(this, 'identification')">
+                        <h3>Identificarea părților</h3>
+                        <p> În orice sistem legal există reguli care stabilesc ce tipuri de contracte se stabilesc. În
+                            figura 2.16 se prezintă ciclul de viață al unui contract. Cele mai importante faze sunt:
+                            <br> • formarea;<br>
+                        <p> • execuția;
+                        <p>
+                        <p> • terminarea.
+                        <p>
+                            Un contract valid trebuie realizat în faza de formare. În timpul execuției, dacă se observă
+                            o participare defectuoasă a unei părți, pot rezulta ofense care de obicei solicită a fi
+                            remediate. Terminarea unui contract poate apărea prin finalizare sau prin încălcare.
+                            Încălcarea este o terminare anormală și de obicei implică un proces de litigiu.
+                        </p>
+                    </div>
+                    <div class="section-card4" onclick="highlightSection(this, 'identification')">
+                        <h3>Formarea</h3>
+                        <p>Este în esență un proces de negociere în care sunt implicate părțile care încearcă să ajungă
+                            la o înțelegere bazată pe termenii contractului. Negocierea automată este dificilă din cauza
+                            diferitelor motive date de folosirea diferitelor ontologii și din cauza strategiilor
+                            diferite utilizate. Ontologia este necesară pentru a se stabili dacă agenții se referă la
+                            același termen.</p>
+                        <p>Pe de altă parte, strategia este necesară pentru a se asigura un maxim de profit pentru
+                            fiecare parte.</p>
+                        <p>În cele mai multe sisteme legale, cel puțin două declarații secvențiale sunt necesare pentru
+                            a crea un contract: o ofertă urmată de o acceptare. O ofertă poate fi urmată de o
+                            contra-ofertă, care la rândul ei poate genera o contra-ofertă și așa mai departe. Procesul
+                            se termină când una din părți emite o acceptare. Acceptarea validează și dă viață
+                            contractului. Contractul începe din momentul în care acceptarea ajunge la ofertant.</p>
+                        <p>O ofertă, odată emisă, poate fi retrasă înainte de a fi acceptată. O ofertă emisă poate să
+                            expire la un anumit moment, dacă nu survine o acceptare înainte de termenul limită. În
+                            abordarea SM-ALFAr o ofertă este făcută fără a se specifica un termen limită deoarece se
+                            presupune un răspuns prompt din partea agenților.</p>
+                        <p>Acest fapt implică de fapt un răspuns într-un interval rezonabil, care este dat de timpul de
+                            răspuns din partea sistemului, care este dat de arhitectura globală și de comunicarea între
+                            agenți. O ofertă retrasă nu mai poate fi acceptată ulterior.</p>
+                        <p>O alternativă la obținerea unui acord (diferită de acceptarea ofertei) este alipirea la
+                            anumiți termeni contractuali care sunt expres menționați. Această modalitate este specifică
+                            contractelor între mai mulți parteneri. În acest caz, părțile sunt de acord cu termenii
+                            contractuali și îi comunică prin diverse modalități.</p>
+                        <p>În final contractul este scris și părțile trebuie să semneze. Contractul devine efectiv din
+                            momentul în care ultimul partener îl semnează.</p>
+                        <p>Un ultim aspect legat de faza de formare a contractului este dat de proasta înțelegere a
+                            termenilor, când una din părți ascunde sau prezintă deformat anumite chestiuni cu scopul
+                            creșterii posibilităților de negociere sau cu scopul înșelăciunii. Din acest motiv se impune
+                            ca părțile să nu facă declarații false.</p>
+                    </div>
+                    <div class="section-card4" onclick="highlightSection(this, 'identification')">
+                        <h3>Execuția</h3>
+                        <p>Este faza care corespunde executării unui contract. Este de așteptat ca în faza de execuție
+                            să fie respectați termenii stabiliți. În cazul SM-ALFAr acest fapt presupune ca agenții să
+                            respecte condițiile pe care au promis să le respecte în timpul formării contractului.Pentru
+                            a se verifica faptul că un contract se desfășoară corespunzător, sunt necesare operații de
+                            supervizare specifice fiecărui contract.</p>
+                    </div>
+                    <div class="section-card4" onclick="highlightSection(this, 'identification')">
+                        <h3>Terminarea</h3>
+                        <p>Un contract poate fi încheiat în condiții normale sau anormale. Un contract terminat normal
+                            (prin eliberare) poate să apară în următoarele situații:</p>
+                        <p>• prin execuție – cele mai multe contracte se termină prin terminarea execuției, în mod
+                            natural;</p>
+                        <p>• prin acordul ambelor părți – această situație apare când nu toate obiectivele contractului
+                            au fost executate, dar ambele părți convin să termine contractul;</p>
+                        <p>• prin intervenția legii – această situație intervine atunci când din motive independente de
+                            părți, se schimbă climatul și este imposibilă executarea contractului. De exemplu, când un
+                            agent nu poate respecta un contract din motive care sunt în afara controlului său, poate
+                            cere să se termine contractul.</p>
+                        <p>Un contract se termină anormal când una din părți nu respectă termenii. Contractele trebuie
+                            să utilizeze termeni neechivoci pentru a evita neînțelegerile. Deoarece limbajul natural
+                            conține termeni cu ambiguități, se preferă folosirea unui limbaj formal.Contractele
+                            electronice pot evita acest aspect prin utilizarea unui limbaj care prin definiție nu
+                            prezintă ambiguități.</p>
+                    </div>
+                    <div id="infoPanel" class="info-panel">
+                        <h3 id="infoPanelTitle">Selectează o fază pentru detalii</h3>
+                        <p id="infoPanelContent">Fă clic pe oricare din nodurile din diagramă pentru a afla mai multe
+                            despre faza respectivă din ciclul de viață al contractului.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sections-container">
+                <div class="sections-header">
+                    <h2>Secțiunile tipice ale unui contract</h2>
+
+                </div>
+
+                <div class="section-card2" onclick="highlightSection(this, 'identification')">
+                    <h3>Identificarea părților</h3>
+                    <p> În această secțiune sunt identificate părțile care participă la contract.</p>
+                </div>
+                <div class="section-card2" onclick="highlightSection(this, 'terms')">
+                    <h3>Termenii</h3>
+                    <p>Un contract constă dintr-un număr de termeni care corespund sarcinilor și obligațiilor care
+                        trebuie făcute de fiecare parte. Termenii sunt declarații care apar în contract. Sunt două clase
+                        importante de termeni: garanții și condiții. O condiție este esențială pentru un contract. O
+                        condiție este, de exemplu, calificarea fiecărui agent adus în coaliție. O garanție, este un
+                        termen mai puțin important.</p>
+                </div>
+
+                <div class="sections-grid">
+
+                    <div class="section-card" onclick="highlightSection(this, 'considerations')">
+                        <h3>Considerații</h3>
+                        <p>Reprezintă anumite drepturi, interese sau beneficii acordate unei anumite părți.</p>
+                    </div>
+                    <div class="section-card" onclick="highlightSection(this, 'exclusions')">
+                        <h3>Clauze de excludere</h3>
+                        <p>o clauză care exclude sau limitează dreptul unei părți.</p>
+                    </div>
+                    <div class="section-card" onclick="highlightSection(this, 'termination')">
+                        <h3>Clauze de terminare</h3>
+                        <p>Aceste clauze asigură posibilitatea fiecărei părți de a termina contractul.</p>
+                    </div>
+                    <div class="section-card" onclick="highlightSection(this, 'treatment')">
+                        <h3>Clauze de remedie</h3>
+                        <p>Acestea reglementează situația în cazul terminării anormale a unui contract.</p>
+                    </div>
+
+                </div>
+                <div class="section-card3" onclick="highlightSection(this, 'arbitration')">
+                    <h3>Clauze de arbitraj</h3>
+                    <p>Acestea rezolvă disputele care pot apare între părți și care pot fi arbitrate și de alte
+                        instanțe, nu doar de cele judecătorești.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        const phaseInfo = {
+            start: {
+                title: " Început",
+                content: "Punctul de pornire al procesului contractual. Aici se identifică nevoia pentru un contract și se stabilesc intențiile inițiale ale părților.",
+                nextArrows: ['arrow-start-formare']
+            },
+            formare: {
+                title: " Formare",
+                content: "Procesul de creare al contractului prin negociere, stabilirea termenilor și condițiilor, și ajungerea la un acord mutual între părți.",
+                nextArrows: ['arrow-formare-executie', 'arrow-contract-valid']
+            },
+            contractvalid: {
+                title: " Contract Valid",
+                content: "Verificarea că contractul îndeplinește toate cerințele legale și că părțile au capacitatea de a-l încheia. Este o condiție suplimentară care poate apărea în procesul de formare.",
+                nextArrows: []
+            },
+            executie: {
+                title: " Execuție",
+                content: "Implementarea efectivă a termenilor contractului, unde părțile își îndeplinesc obligațiile stabilite.",
+                nextArrows: ['arrow-executie-decizie', 'arrow-executie-remedii', 'arrow-proasta-reprezentare']
+            },
+            decizie: {
+                title: " Punct de Decizie",
+                content: "Momentul critic unde se determină dacă contractul se îndeplinește cu succes sau apar probleme care necesită rezolvare.",
+                nextArrows: ['arrow-decizie-eliberare', 'arrow-decizie-breach']
+            },
+            eliberare: {
+                title: " Eliberare",
+                content: "Finalizarea cu succes a contractului, cu toate obligațiile îndeplinite satisfăcător de către toate părțile.",
+                nextArrows: ['arrow-eliberare-end']
+            },
+            breach: {
+                title: " Breach",
+                content: "Încălcarea contractului - când una sau mai multe părți nu își îndeplinesc obligațiile conform termenilor agreați.",
+                nextArrows: ['arrow-breach-litigiu']
+            },
+            litigiu: {
+                title: " Litigiu",
+                content: "Procesul juridic prin care disputele contractuale sunt rezolvate în instanță sau prin alte mijloace legale.",
+                nextArrows: ['arrow-litigiu-end']
+            },
+            remedii: {
+                title: " Remedii",
+                content: "Atunci când contractul a fost format în condiții greșite, cum ar fi o reprezentare defectuoasă, partea afectată poate solicita remedii legale.",
+                nextArrows: ['arrow-remedii-end']
+            },
+            end: {
+                title: " Sfârșit",
+                content: "Punctul final al ciclului de viață al contractului, indiferent de rezultatul obținut.",
+                nextArrows: []
+            }
+        };
+
+        let currentProgress = 0;
+        let progressInterval;
+
+        function showPhaseInfo(phase) {
+            // Remove active class from all nodes and arrows
+            document.querySelectorAll('.flowchart-node').forEach(node => {
+                node.classList.remove('active');
+            });
+            document.querySelectorAll('.curved-line, .curved-line-dashed').forEach(arrow => {
+                arrow.classList.remove('active', 'animated');
+                arrow.removeAttribute('marker-end');
+            });
+
+            // Add active class to clicked node
+            event.target.classList.add('active');
+
+            // Update info panel
+            const info = phaseInfo[phase];
+            document.getElementById('infoPanelTitle').textContent = info.title;
+            document.getElementById('infoPanelContent').textContent = info.content;
+
+            // Activate and animate next arrows
+            if (info.nextArrows && info.nextArrows.length > 0) {
+                info.nextArrows.forEach((arrowId, index) => {
+                    const arrow = document.getElementById(arrowId);
+                    if (arrow) {
+                        setTimeout(() => {
+                            arrow.classList.add('active');
+                            arrow.removeAttribute('marker-end');
+                            setTimeout(() => {
+                                arrow.classList.add('animated');
+                            }, 200);
+                        }, index * 300);
+                    }
+                });
+            }
+
+            // Update progress
+            updateProgress(phase);
+        }
+
+        function toggleContractDetails(element) {
+            element.classList.toggle('expanded');
+        }
+
+        function showAndToggleBothContracts() {
+            const adeziuneCard = document.querySelector('.contract-type[data-type="adeziune"]');
+            const multilateralCard = document.querySelector('.contract-type[data-type="multilateral"]');
+
+            // Toggle simultan: dacă unul e închis, le deschidem pe ambele
+            const shouldExpand = !adeziuneCard.classList.contains('expanded') || !multilateralCard.classList.contains('expanded');
+
+            if (shouldExpand) {
+                adeziuneCard.classList.add('expanded');
+                multilateralCard.classList.add('expanded');
+            } else {
+                adeziuneCard.classList.remove('expanded');
+                multilateralCard.classList.remove('expanded');
+            }
+        }
+
+
+
+
+        function updateProgress(phase) {
+            const progressMap = {
+                start: 0,
+                formare: 24,
+                contractvalid: 24,
+                executie: 50,
+                decizie: 50, // Decizia e doar un punct de bifurcație, poate rămâne la același nivel
+                breach: 64,
+                litigiu: 84,
+                eliberare: 76,
+                remedii: 76,
+                end: 100,
+                proastaexecutie: 50
+            };
+
+
+            const targetProgress = progressMap[phase] || 0;
+            animateProgress(targetProgress);
+        }
+
+        function animateProgress(target) {
+            if (progressInterval) clearInterval(progressInterval);
+
+            const progressFill = document.getElementById('progressFill');
+            const progressPercentage = document.getElementById('progressPercentage');
+
+            progressInterval = setInterval(() => {
+                if (currentProgress < target) {
+                    currentProgress += 2;
+                } else if (currentProgress > target) {
+                    currentProgress -= 2;
+                } else {
+                    clearInterval(progressInterval);
+                }
+
+                currentProgress = Math.max(0, Math.min(100, currentProgress));
+                progressFill.style.width = currentProgress + '%';
+                progressPercentage.textContent = currentProgress + '%';
+            }, 20);
+        }
+
+        // Initialize with start phase
+        setTimeout(() => {
+            const startNode = document.querySelector('.node-circle');
+            startNode.classList.add('active');
+            showPhaseInfo('start');
+        }, 500);
+
+        function highlightSection(card, sectionKey) {
+            const isGrouped = card.classList.contains('section-card') &&
+                !card.classList.contains('section-card2') &&
+                !card.classList.contains('section-card3') &&
+                !card.classList.contains('section-card4');
+
+            if (isGrouped) {
+                // Aplicație pe toate section-card (grupat)
+                const allGrouped = document.querySelectorAll('.section-card');
+                const shouldExpand = Array.from(allGrouped).some(c => !c.classList.contains('expanded'));
+                allGrouped.forEach(c => {
+                    if (shouldExpand) {
+                        c.classList.add('expanded');
+                    } else {
+                        c.classList.remove('expanded');
+                    }
+                });
+            } else {
+                // Deschidere/închidere individuală
+                card.classList.toggle('expanded');
+            }
+
+            // Notificare informativă (opțional)
+            const notification = document.getElementById("notification");
+            const text = document.getElementById("notificationText");
+
+            let info = '';
+            switch (sectionKey) {
+                case 'identification':
+                    info = "Identificarea părților: secțiune ce identifică fiecare parte contractantă cu detalii juridice.";
+                    break;
+                case 'terms':
+                    info = "Termenii: condițiile esențiale și garanțiile care definesc sarcinile și obligațiile fiecărei părți.";
+                    break;
+                case 'considerations':
+                    info = "Considerații: beneficii sau drepturi oferite în schimbul obligațiilor asumate.";
+                    break;
+                case 'exclusions':
+                    info = "Clauze de Excludere: limitează anumite drepturi ale părților în situații specifice.";
+                    break;
+                case 'termination':
+                    info = "Clauze de Terminare: condiții în care contractul poate fi încheiat legal de către părți.";
+                    break;
+                case 'arbitration':
+                    info = "Clauze de Arbitraj: metode alternative de soluționare a disputelor în afara instanțelor.";
+                    break;
+            }
+
+            if (info) {
+                text.textContent = info;
+                notification.classList.add("show", "info");
+                setTimeout(() => {
+                    notification.classList.remove("show", "info");
+                }, 5000);
+            }
+        }
+
+        function showContractInfo(type) {
+            const notification = document.getElementById("notification");
+            const text = document.getElementById("notificationText");
+
+            text.textContent = contractInfo[type];
+            notification.classList.add("show", "info");
+            setTimeout(() => {
+                notification.classList.remove("show", "info");
+            }, 5000);
+        }
+
+        function startAnimation() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const steps = ['formare', 'contract-valid', 'executie', 'eliberare'];
+            currentPhase = 0;
+            const fill = document.getElementById("progressFill");
+            const perc = document.getElementById("progressPercentage");
+
+            animationInterval = setInterval(() => {
+                if (currentPhase >= steps.length) {
+                    clearInterval(animationInterval);
+                    isAnimating = false;
+                    return;
+                }
+                showPhaseInfo(steps[currentPhase]);
+                fill.style.width = ((currentPhase + 1) / steps.length * 100) + '%';
+                perc.textContent = Math.round((currentPhase + 1) / steps.length * 100) + '%';
+                currentPhase++;
+            }, 2000);
+        }
+
+        function toggleAllSectionCards() {
+            const cards = document.querySelectorAll('.section-card');
+            const shouldExpand = Array.from(cards).some(card => !card.classList.contains('expanded'));
+
+            cards.forEach(card => {
+                if (shouldExpand) {
+                    card.classList.add('expanded');
+                } else {
+                    card.classList.remove('expanded');
+                }
+            });
+        }
+
+        function toggleGroupedSectionCards() {
+            const cards = document.querySelectorAll('.section-card'); // DOAR .section-card simplu
+            const shouldExpand = Array.from(cards).some(card => !card.classList.contains('expanded'));
+
+            cards.forEach(card => {
+                if (shouldExpand) {
+                    card.classList.add('expanded');
+                } else {
+                    card.classList.remove('expanded');
+                }
+            });
+        }
+        function toggleIndividualSectionCard(element) {
+            element.classList.toggle('expanded');
+        }
+    </script>
+</body>
+
+</html>

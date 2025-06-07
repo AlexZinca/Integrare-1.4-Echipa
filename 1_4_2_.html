@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.min.js"></script>
+    <title>Contract Lifecycle Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --claude-bg: #f7f7f8;
+            --claude-surface: #ffffff;
+            --claude-border: #e5e7eb;
+            --claude-text: #2d3748;
+            --claude-text-light: #4a5568;
+            --claude-accent: #d97706;
+            --claude-accent-light: #f59e0b;
+            --claude-blue: #3b82f6;
+            --claude-success: #10b981;
+            --claude-error: #ef4444;
+            --claude-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --claude-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--claude-bg);
+            color: var(--claude-text);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Claude Style */
+        .header {
+            padding: 40px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(207deg, var(--claude-accent), #f59e0b, #ffffff);
+            animation: shimmer 10s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+
+            0%,
+            100% {
+                transform: translateX(-100%);
+            }
+
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            margin-bottom: 12px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--claude-text-light);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            padding: 40px 0;
+        }
+
+        .content-grid {
+
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .sidebar {
+            background: var(--claude-surface);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--claude-shadow);
+            border: 1px solid var(--claude-border);
+            height: fit-content;
+            top: 20px;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--claude-text);
+            border-bottom: 2px solid var(--claude-accent);
+            padding-bottom: 8px;
+        }
+
+        .contract-types {
+            margin-bottom: 32px;
+        }
+
+        .contract-type {
+            background: var(--claude-bg);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contract-type::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--claude-accent);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: bottom;
+        }
+
+        .contract-type:hover::before {
+            transform: scaleY(1);
+        }
+
+        .contract-type:hover {
+            border-color: var(--claude-accent);
+            box-shadow: var(--claude-shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .contract-type h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--claude-accent);
+            margin-bottom: 8px;
+        }
+
+        .contract-type p {
+            color: var(--claude-text-light);
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+
+        .btn {
+            background: var(--claude-accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--claude-accent-light);
+            transform: translateY(-1px);
+            box-shadow: var(--claude-shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--claude-surface);
+            color: var(--claude-text);
+            border: 1px solid var(--claude-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--claude-bg);
+            border-color: var(--claude-accent);
+        }
+
+        /* Diagram Section */
+        .diagram-container {
+            background: var(--claude-surface);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--claude-shadow);
+            border: 1px solid var(--claude-border);
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .diagram-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .diagram-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            margin: 0;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--claude-bg);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--claude-text-light);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--claude-success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Enhanced Diagram */
+        .contract-diagram {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            border: 2px solid var(--claude-border);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .diagram-node {
+            position: absolute;
+            background: var(--claude-surface);
+            color: var(--claude-text);
+            padding: 16px 24px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--claude-shadow);
+            border: 2px solid var(--claude-border);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .diagram-node:hover {
+            transform: scale(1.08);
+            box-shadow: var(--claude-shadow-lg);
+            border-color: var(--claude-accent);
+            background: var(--claude-accent);
+            color: white;
+        }
+
+        .diagram-node.active {
+            background: var(--claude-accent);
+            color: white;
+            border-color: var(--claude-accent);
+            transform: scale(1.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Exact positioning from image */
+        .start-node {
+            top: 50px;
+            left: 50px;
+            background: var(--claude-success);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            min-width: 24px;
+            border: 3px solid var(--claude-success);
+        }
+
+        .end-node {
+            bottom: 50px;
+            right: 50px;
+            background: var(--claude-text);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            min-width: 24px;
+            border: 3px solid var(--claude-text);
+        }
+
+        .formare {
+            top: 80px;
+            left: 120px;
+        }
+
+        .executie {
+            top: 80px;
+            left: 300px;
+        }
+
+        .contract-valid {
+            top: 20px;
+            left: 460px;
+            font-size: 0.8rem;
+            background: var(--claude-blue);
+            color: white;
+            border-color: var(--claude-blue);
+        }
+
+        .eliberare {
+            top: 150px;
+            left: 540px;
+        }
+
+        .breach {
+            top: 220px;
+            left: 460px;
+            background: var(--claude-error);
+            color: white;
+            border-color: var(--claude-error);
+        }
+
+        .litigiu {
+            top: 220px;
+            left: 620px;
+        }
+
+        .remedii {
+            bottom: 80px;
+            left: 120px;
+        }
+
+        .proasta-reprezentare {
+            bottom: 180px;
+            left: 50px;
+            font-size: 0.8rem;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* Connection Lines */
+        .connection-line {
+            position: absolute;
+            background: var(--claude-border);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .connection-line.active {
+            background: var(--claude-accent);
+            box-shadow: 0 0 10px rgba(217, 119, 6, 0.3);
+        }
+
+        .line-horizontal {
+            height: 2px;
+        }
+
+        .line-vertical {
+            width: 2px;
+        }
+
+        .line-diagonal {
+            height: 2px;
+            transform-origin: left center;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            z-index: 2;
+        }
+
+        .arrow-right {
+            border-left: 8px solid var(--claude-border);
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        .arrow-down {
+            border-top: 8px solid var(--claude-border);
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            background: var(--claude-bg);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 24px;
+            display: none;
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .info-panel.active {
+            display: block;
+        }
+
+        .info-panel h3 {
+            color: var(--claude-accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-panel p {
+            color: var(--claude-text-light);
+            line-height: 1.7;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 32px 0;
+            background: var(--claude-bg);
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid var(--claude-border);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-text {
+            font-weight: 500;
+            color: var(--claude-text);
+        }
+
+        .progress-percentage {
+            font-size: 0.9rem;
+            color: var(--claude-text-light);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--claude-border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--claude-success), var(--claude-accent));
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+        }
+
+        /* Contract Sections */
+        .sections-container {
+            background: var(--claude-surface);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--claude-shadow);
+            border: 1px solid var(--claude-border);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .sections-header {
+            margin-bottom: 24px;
+        }
+
+        .sections-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            border-bottom: 2px solid var(--claude-accent);
+            margin-bottom: 8px;
+        }
+
+        .sections-header p {
+            color: var(--claude-text-light);
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            margin: 20px 0;
+            background: #fafbfc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .node rect {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .node rect:hover {
+            stroke: #2c3e50;
+            stroke-width: 2px;
+            filter: brightness(1.1);
+        }
+
+        .node text {
+            font-size: 13px;
+            font-weight: 600;
+            fill: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .link {
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .link:hover {
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .info-card {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            margin: 0 0 10px 0;
+            color: #ecf0f1;
+        }
+
+        .info-card p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+
+        /* Carduri secțiuni comune */
+        .section-card,
+        .section-card2,
+        .section-card4,
+        .section-card3 {
+            background: var(--claude-bg);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Spațiere personalizată (dacă ai nevoie) */
+        .section-card2 {
+            margin-bottom: 20px;
+        }
+
+        .section-card3 {
+            margin-top: 20px;
+        }
+
+        .section-card4 {
+            background-color: rgba(217, 119, 6, 0.3);
+            margin-bottom: 20px;
+        }
+
+        /* Efect decorativ pe hover cu ::before */
+        .section-card::before,
+        .section-card2::before,
+        .section-card4::before,
+        .section-card3::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--claude-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        /* Activează bara decorativă la hover */
+        .section-card:hover::before,
+        .section-card2:hover::before,
+        .section-card4:hover::before,
+        .section-card3:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Hover styling pentru carduri */
+        .section-card:hover,
+        .section-card2:hover,
+        .section-card4:hover,
+        .section-card3:hover {
+            border-color: var(--claude-accent);
+            transform: translateY(-2px);
+            box-shadow: var(--claude-shadow-lg);
+        }
+
+        /* Conținutul textului */
+        .section-card h3,
+        .section-card2 h3,
+        .section-card4 h3,
+        .section-card3 h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--claude-text);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-card p,
+        .section-card2 p,
+        .section-card4 p,
+        .section-card3 p {
+            color: var(--claude-text-light);
+            font-size: 0.9rem;
+        }
+
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .diagram-container {
+                overflow-x: auto;
+            }
+
+            .contract-diagram {
+                min-width: 800px;
+            }
+
+            .controls {
+                justify-content: center;
+            }
+        }
+
+        /* Floating notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--claude-surface);
+            border: 1px solid var(--claude-border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: var(--claude-shadow-lg);
+            z-index: 1000;
+            transform: translateX(300px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--claude-success);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--claude-blue);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 300;
+        }
+
+        .flowchart-container {
+            height: 280px;
+            margin-left: 50px;
+            margin-right: 50px;
+            position: relative;
+            overflow: visible;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .flowchart-node {
+            position: absolute;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 70px;
+            background: white;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .flowchart-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-color: #d97706;
+        }
+
+        .flowchart-node.active {
+            background: #d97706;
+            color: white;
+            border-color: #d97706;
+        }
+
+        .node-circle {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2c3e50;
+            color: white;
+            border: 2px solid #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+            min-width: auto;
+        }
+
+        .node-diamond {
+            transform: rotate(45deg);
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .node-diamond::after {
+            content: "◊";
+            transform: rotate(-45deg);
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .node-additional {
+            background: rgba(217, 119, 6, 0.3);
+            border-color: rgba(217, 119, 6, 0.3);
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 10px;
+        }
+
+        .node-start {
+            top: 100px;
+            left: 20px;
+        }
+
+        .node-formare {
+            top: 100px;
+            left: 110px;
+        }
+
+        .node-executie {
+            top: 100px;
+            left: 230px;
+        }
+
+        .node-diamond {
+            top: 100px;
+            left: 330px;
+        }
+
+        .node-eliberare {
+            top: 50px;
+            left: 470px;
+        }
+
+        .node-breach {
+            top: 150px;
+            left: 470px;
+        }
+
+        .node-litigiu {
+            top: 150px;
+            left: 590px;
+        }
+
+        .node-remedii {
+            top: 220px;
+            left: 290px;
+        }
+
+
+        .node-end {
+            top: 100px;
+            left: 710px;
+        }
+
+        .node-end-remedii {
+            top: 215px;
+            left: 490px;
+        }
+
+
+        .node-contract-valid {
+            top: 50px;
+            left: 170px;
+        }
+
+        .node-reprezentare-proasta {
+            top: 185px;
+            left: 90px;
+        }
+
+        .arrow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(1) {
+            d: path("M 60 120 Q 85 120 110 120");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(2) {
+            d: path("M 180 120 Q 205 120 230 120");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(3) {
+            d: path("M 300 120 Q 325 120 350 120");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(4) {
+            d: path("M 370 105 Q 420 60 470 75");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(5) {
+            d: path("M 370 135 Q 420 180 470 165");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(6) {
+            d: path("M 540 70 Q 625 90 710 115");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(7) {
+            d: path("M 540 170 Q 565 170 590 170");
+        }
+
+        .arrow-svg path.curved-line:nth-of-type(8) {
+            d: path("M 660 165 Q 685 135 710 125");
+        }
+
+        .arrow-svg path.curved-line-dashed:nth-of-type(1) {
+            d: path("M 205 100 Q 205 85 205 75");
+        }
+
+
+        .curved-line {
+            stroke: #2c3e50;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .curved-line.active {
+            stroke: #d97706;
+            stroke-width: 3;
+            opacity: 1;
+            filter: drop-shadow(0 0 4px rgba(102, 126, 234, 0.4));
+        }
+
+        .curved-line.animated {
+            stroke-dasharray: 8;
+            animation: flow 2s linear infinite;
+        }
+
+        .curved-line-dashed {
+            stroke: rgb(217 119 6 / 47%);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 4, 4;
+            stroke-linecap: round;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .curved-line-dashed.active {
+            stroke: #f3cd2177;
+            opacity: 1;
+            animation: flow-dashed 1.5s linear infinite;
+        }
+
+        @keyframes flow {
+            0% {
+                stroke-dashoffset: 0;
+            }
+
+            100% {
+                stroke-dashoffset: -16;
+            }
+        }
+
+        @keyframes flow-dashed {
+            0% {
+                stroke-dashoffset: 0;
+            }
+
+            100% {
+                stroke-dashoffset: -8;
+            }
+        }
+
+        /* Arrow markers */
+        .arrow-marker {
+            fill: #2c3e50;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .arrow-marker.active {
+            fill: #d97706;
+            opacity: 1;
+        }
+
+        /* Labels - smaller and less prominent */
+        .label {
+            position: absolute;
+            font-size: 10px;
+            color: #999;
+            font-style: italic;
+            font-weight: 400;
+            z-index: 5;
+            background: rgba(248, 249, 250, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .progress-percentage {
+            font-weight: bold;
+            color: #d97706;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d97706, #e2cb8c);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .info-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            min-height: 120px;
+        }
+
+        .info-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-panel p {
+            color: #6c757d;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .section-card4 p {
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .section-card4.expanded p {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>1.4.2 Influența computerelor în schimbarea legilor</h1>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="main-wrapper">
+            <div class="content-grid">
+                <!-- Început secțiune: 1.4.2 Influența computerelor în schimbarea legilor -->
+
+
+
+
+                <!-- Card introductiv -->
+                <div class="section-card3">
+                    <p>Fără îndoială, răspândirea computerelor, a rețelelor de calculatoare și a tehnologiei informației
+                        în general afectează legislația. Multe publicații apărute în ultima perioadă confirmă cele
+                        spuse. Tehnologia informației afectează legislația în trei direcții:</p>
+                </div>
+
+                <!-- Card cu cele 3 direcții -->
+                <div class="container">
+
+                    <div class="chart-container">
+                        <svg id="sankey"></svg>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="section-card4">
+                            <h3> Tehnologia ca Unealtă Suport</h3>
+                            <p>Utilizarea computerelor pentru crearea bazelor de date, comunicația rapidă și construirea
+                                informațiilor juridice.</p>
+                        </div>
+                        <div class="section-card4">
+                            <h3> Schimbarea Legilor</h3>
+                            <p>Adaptarea legislației la impactul tehnologiei, modificarea cadrului legal pentru
+                                provocările digitale.</p>
+                        </div>
+
+                    </div>
+                    <div class="section-card4">
+                        <h3> Entități Legale Digitale</h3>
+                        <p>Agenții artificiali devin actori în sistemele legale, implicați în procese comerciale și
+                            juridice.</p>
+                    </div>
+                </div>
+
+                <!-- Card detalii extinse -->
+                <div class="section-card3">
+                    <p>Legislația trebuie să se adapteze pentru a face față noilor situații date de omniprezența
+                        computerelor și a lumii digitale. Cel mai important aspect care trebuie rezolvat de lege este
+                        dat de drepturile de autor, de modalitatea de formare a contractelor electronice, de entitățile
+                        electronice și de modalitatea de rezolvare a problemelor date de informații și cunoștințe, care
+                        sunt din ce în ce mai puțin stabile, dar devin din ce în ce mai importante.</p>
+                    <p>Pe de altă parte, știința calculatoarelor trebuie să fie capabilă să creeze agenți artificiali
+                        care să se supună legilor.</p>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+
+
+
+    <script>
+        const data = {
+            nodes: [
+                // Surse tehnologice (0-2)
+                { name: "Tehnologia ca\nUnealtă Suport", color: "#3498db" },
+                { name: "Schimbarea\nLegilor", color: "#e74c3c" },
+                { name: "Entități Legale\nDigitale", color: "#2ecc71" },
+
+                // Domenii de impact (3-4)
+                { name: "Procesare\nJuridică", color: "#9b59b6" },
+                // { name: "Cadru Legal\nDigital", color: "#f39c12" },
+
+                // Rezultat final (5)
+                // { name: "Legislație\nModernă", color: "#1abc9c" }
+            ],
+            links: [
+                // De la tehnologii la domenii de impact
+                { source: 0, target: 3, value: 40 }, // Tehnologia ca Unealtă -> Procesare Juridică
+                { source: 1, target: 3, value: 45 }, // Schimbarea Legilor -> Cadru Legal Digital
+                { source: 2, target: 3, value: 25 }, // Entități Legale -> Procesare Juridică
+                //{ source: 2, target: 4, value: 30 }, // Entități Legale -> Cadru Legal Digital
+
+                // De la domenii de impact la legislația modernă
+                //   { source: 3, target: 5, value: 65 }, // Procesare Juridică -> Legislație Modernă
+                //    { source: 4, target: 5, value: 75 }  // Cadru Legal Digital -> Legislație Modernă
+            ]
+        };
+
+        // Configurare dimensiuni
+        const margin = { top: 30, right: 150, bottom: 30, left: 150 };
+        const width = 750 - margin.left - margin.right;
+        const height = 400 - margin.top - margin.bottom;
+
+        // Crearea SVG-ului
+        const svg = d3.select("#sankey")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
+
+        const g = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Configurarea Sankey
+        const sankey = d3.sankey()
+            .nodeWidth(25)
+            .nodePadding(50)
+            .extent([[0, 0], [width, height]]);
+
+        // Procesarea datelor
+        const { nodes, links } = sankey(data);
+
+        // Crearea gradientelor pentru link-uri
+        const defs = svg.append("defs");
+
+        links.forEach((link, i) => {
+            const gradient = defs.append("linearGradient")
+                .attr("id", `gradient-${i}`)
+                .attr("gradientUnits", "userSpaceOnUse")
+                .attr("x1", link.source.x1)
+                .attr("x2", link.target.x0);
+
+            gradient.append("stop")
+                .attr("offset", "0%")
+                .attr("stop-color", link.source.color);
+
+            gradient.append("stop")
+                .attr("offset", "100%")
+                .attr("stop-color", link.target.color);
+        });
+
+        // Crearea link-urilor cu gradient
+        const link = g.append("g")
+            .selectAll(".link")
+            .data(links)
+            .enter().append("path")
+            .attr("class", "link")
+            .attr("d", d3.sankeyLinkHorizontal())
+            .attr("stroke", (d, i) => `url(#gradient-${i})`)
+            .attr("stroke-width", d => Math.max(2, d.width))
+            .attr("fill", "none")
+            .attr("stroke-opacity", 0.6);
+
+        // Tooltip pentru link-uri
+        link.append("title")
+            .text(d => `${d.source.name.replace(/\n/g, ' ')} → ${d.target.name.replace(/\n/g, ' ')}\nInfluență: ${d.value}%`);
+
+        // Crearea nodurilor
+        const node = g.append("g")
+            .selectAll(".node")
+            .data(nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+        // Dreptunghiuri pentru noduri
+        node.append("rect")
+            .attr("height", d => d.y1 - d.y0)
+            .attr("width", sankey.nodeWidth())
+            .attr("fill", d => d.color)
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 2)
+            .attr("rx", 6)
+            .attr("ry", 6)
+            .attr("filter", "drop-shadow(0 4px 6px rgba(0,0,0,0.1))");
+
+        // Text pentru noduri
+        node.append("text")
+            .attr("x", -10)
+            .attr("y", d => (d.y1 - d.y0) / 2)
+            .attr("dy", "0.35em")
+            .attr("text-anchor", "end")
+            .text(d => d.name)
+            .filter(d => d.x0 < width / 2)
+            .attr("x", sankey.nodeWidth() + 10)
+            .attr("text-anchor", "start");
+
+        // Tooltip pentru noduri
+        node.append("title")
+            .text(d => `${d.name.replace(/\n/g, ' ')}\nTotal Impact: ${d.value}%`);
+
+        // Funcții de interactivitate
+        function animateFlow() {
+            link.transition()
+                .duration(1500)
+                .attr("stroke-opacity", 0.9)
+                .attr("stroke-width", d => Math.max(3, d.width * 1.3))
+                .transition()
+                .duration(1000)
+                .attr("stroke-opacity", 0.6)
+                .attr("stroke-width", d => Math.max(2, d.width));
+
+            node.select("rect")
+                .transition()
+                .duration(1500)
+                .attr("filter", "drop-shadow(0 8px 16px rgba(0,0,0,0.2))")
+                .transition()
+                .duration(1000)
+                .attr("filter", "drop-shadow(0 4px 6px rgba(0,0,0,0.1))");
+        }
+
+        function resetView() {
+            link.transition()
+                .duration(500)
+                .attr("stroke-opacity", 0.6)
+                .attr("stroke-width", d => Math.max(2, d.width));
+
+            node.select("rect")
+                .transition()
+                .duration(500)
+                .attr("filter", "drop-shadow(0 4px 6px rgba(0,0,0,0.1))");
+        }
+
+        function highlightPaths() {
+            link.transition()
+                .duration(800)
+                .attr("stroke-opacity", 0.9)
+                .style("filter", "drop-shadow(0 0 6px rgba(255,255,255,0.8))")
+                .transition()
+                .duration(800)
+                .attr("stroke-opacity", 0.6)
+                .style("filter", "none");
+        }
+
+        // Hover effects
+        node.on("mouseover", function (event, d) {
+            d3.select(this).select("rect")
+                .transition()
+                .duration(200)
+                .attr("stroke-width", 3)
+                .attr("filter", "drop-shadow(0 6px 12px rgba(0,0,0,0.15))");
+        })
+            .on("mouseout", function (event, d) {
+                d3.select(this).select("rect")
+                    .transition()
+                    .duration(200)
+                    .attr("stroke-width", 2)
+                    .attr("filter", "drop-shadow(0 4px 6px rgba(0,0,0,0.1))");
+            });
+
+        link.on("mouseover", function (event, d) {
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("stroke-opacity", 0.9)
+                .attr("stroke-width", Math.max(3, d.width * 1.2));
+        })
+            .on("mouseout", function (event, d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("stroke-opacity", 0.6)
+                    .attr("stroke-width", Math.max(2, d.width));
+            });
+
+        // Animație inițială
+        setTimeout(() => {
+            animateFlow();
+        }, 1000);
+
+
+        function highlightSection(card, sectionKey) {
+            document.querySelectorAll('.section-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+
+            const notification = document.getElementById("notification");
+            const text = document.getElementById("notificationText");
+            let info = '';
+            switch (sectionKey) {
+                case 'identification':
+                    info = "Identificarea părților: secțiune ce identifică fiecare parte contractantă cu detalii juridice.";
+                    break;
+                case 'terms':
+                    info = "Termenii: condițiile esențiale și garanțiile care definesc sarcinile și obligațiile fiecărei părți.";
+                    break;
+                case 'considerations':
+                    info = "Considerații: beneficii sau drepturi oferite în schimbul obligațiilor asumate.";
+                    break;
+                case 'exclusions':
+                    info = "Clauze de Excludere: limitează anumite drepturi ale părților în situații specifice.";
+                    break;
+                case 'termination':
+                    info = "Clauze de Terminare: condiții în care contractul poate fi încheiat legal de către părți.";
+                    break;
+                case 'arbitration':
+                    info = "Clauze de Arbitraj: metode alternative de soluționare a disputelor în afara instanțelor.";
+                    break;
+            }
+            text.textContent = info;
+            notification.classList.add("show", "info");
+            setTimeout(() => {
+                notification.classList.remove("show", "info");
+            }, 5000);
+        }
+        function showContractInfo(type) {
+            const notification = document.getElementById("notification");
+            const text = document.getElementById("notificationText");
+
+            text.textContent = contractInfo[type];
+            notification.classList.add("show", "info");
+            setTimeout(() => {
+                notification.classList.remove("show", "info");
+            }, 5000);
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const groupCard4 = document.querySelectorAll('.section-card4');
+
+            groupCard4.forEach(card => {
+                card.addEventListener('click', () => {
+                    const shouldExpand = [...groupCard4].some(c => !c.classList.contains('expanded'));
+                    groupCard4.forEach(c => {
+                        c.classList.toggle('expanded', shouldExpand);
+                    });
+                });
+            });
+        });
+
+        function startAnimation() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const steps = ['formare', 'contract-valid', 'executie', 'eliberare'];
+            currentPhase = 0;
+            const fill = document.getElementById("progressFill");
+            const perc = document.getElementById("progressPercentage");
+
+            animationInterval = setInterval(() => {
+                if (currentPhase >= steps.length) {
+                    clearInterval(animationInterval);
+                    isAnimating = false;
+                    return;
+                }
+                showPhaseInfo(steps[currentPhase]);
+                fill.style.width = ((currentPhase + 1) / steps.length * 100) + '%';
+                perc.textContent = Math.round((currentPhase + 1) / steps.length * 100) + '%';
+                currentPhase++;
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>
