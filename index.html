@@ -337,6 +337,136 @@
     color: #ff934f;
     opacity: 0.7;
   }
+
+  /* Stiluri speciale pentru modalul browser Canva */
+  .browser-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .browser-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .browser-window {
+    width: 95%;
+    height: 90%;
+    background: #f5f5f5;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+
+  .browser-modal.active .browser-window {
+    transform: scale(1);
+  }
+
+  .browser-header {
+    height: 50px;
+    background: linear-gradient(135deg, #e5e5e5, #d0d0d0);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid #c0c0c0;
+  }
+
+  .browser-controls {
+    display: flex;
+    gap: 8px;
+    margin-right: 16px;
+  }
+
+  .browser-control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .browser-control.close {
+    background: #ff5f56;
+  }
+
+  .browser-control.minimize {
+    background: #ffbd2e;
+  }
+
+  .browser-control.maximize {
+    background: #27ca3f;
+  }
+
+  .browser-control:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  .browser-address-bar {
+    flex: 1;
+    height: 32px;
+    background: white;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    font-family: monospace;
+  }
+
+  .browser-content {
+    height: calc(100% - 50px);
+    background: white;
+    position: relative;
+  }
+
+  .browser-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    z-index: 10;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ff934f;
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
   </style>
   <script defer>
 async function askChatGPT() {
@@ -389,22 +519,46 @@ async function askChatGPT() {
       }, 3000);
     }
 
-    function handleCanvaLink() {
+    // Funcție pentru deschiderea modalului browser pentru Canva
+    function openCanvaBrowser() {
+      const modal = document.getElementById('canva-browser-modal');
+      const iframe = document.getElementById('canva-iframe');
+      const loadingIndicator = document.getElementById('canva-loading');
+      
+      // Afișează modalul
+      modal.classList.add('active');
+      
+      // Afișează indicatorul de încărcare
+      loadingIndicator.style.display = 'flex';
+      
+      // Încarcă Canva în iframe
       const canvaUrl = 'https://www.canva.com/design/DAGnz4W251M/vHmC4cY1fa0033PBfHWX8A/view?utm_content=DAGnz4W251M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1a5d18f1ee';
+      iframe.src = canvaUrl;
       
-      // Încearcă să deschidă într-un tab nou
-      const newWindow = window.open(canvaUrl, '_blank');
+      // Ascunde indicatorul de încărcare după un timp
+      setTimeout(() => {
+        loadingIndicator.style.display = 'none';
+      }, 3000);
       
-      if (newWindow) {
-        showNotification('Link-ul Canva s-a deschis într-un tab nou!', 'success');
-      } else {
-        // Fallback - copiază link-ul în clipboard
-        navigator.clipboard.writeText(canvaUrl).then(() => {
-          showNotification('Link-ul a fost copiat în clipboard! Deschide-l manual în browser.', 'info');
-        }).catch(() => {
-          showNotification('Nu s-a putut deschide link-ul. Încearcă să-l accesezi direct.', 'warning');
-        });
-      }
+      showNotification('Canva se încarcă în browser-ul integrat!', 'info');
+    }
+
+    // Funcție pentru închiderea modalului browser Canva
+    function closeCanvaBrowser() {
+      const modal = document.getElementById('canva-browser-modal');
+      const iframe = document.getElementById('canva-iframe');
+      
+      modal.classList.remove('active');
+      
+      // Oprește încărcarea iframe-ului pentru a economisi resurse
+      setTimeout(() => {
+        iframe.src = '';
+      }, 300);
+    }
+
+    // Funcția originală pentru celelalte link-uri (păstrată neschimbată)
+    function handleCanvaLink() {
+      openCanvaBrowser();
     }
   </script>
 </head>
@@ -500,11 +654,34 @@ async function askChatGPT() {
     </div>
   </div>
 
-  <!-- Modal universal (doar pentru link-uri care funcționează în iframe) -->
+  <!-- Modal universal pentru link-urile normale (iframe) -->
   <div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
     <div class="modal-content w-11/12 h-5/6 rounded-2xl relative overflow-hidden shadow-2xl">
       <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 bg-white/90 backdrop-blur-sm rounded-full w-10 h-10 flex items-center justify-center shadow-lg z-10 transition-all hover:scale-110 font-bold text-xl">×</button>
       <iframe id="modal-frame" class="w-full h-full rounded-2xl" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <!-- Modal special tip browser pentru Canva -->
+  <div id="canva-browser-modal" class="browser-modal">
+    <div class="browser-window">
+      <div class="browser-header">
+        <div class="browser-controls">
+          <div class="browser-control close" onclick="closeCanvaBrowser()"></div>
+          <div class="browser-control minimize"></div>
+          <div class="browser-control maximize"></div>
+        </div>
+        <div class="browser-address-bar">
+          🔒 canva.com/design/DAGnz4W251M/vHmC4cY1fa0033PBfHWX8A/view
+        </div>
+      </div>
+      <div class="browser-content">
+        <div id="canva-loading" class="loading-indicator">
+          <div class="loading-spinner"></div>
+          <p style="color: #666; font-size: 14px;">Se încarcă Canva...</p>
+        </div>
+        <iframe id="canva-iframe" class="browser-iframe"></iframe>
+      </div>
     </div>
   </div>
 
@@ -516,6 +693,7 @@ async function askChatGPT() {
       arrow.classList.toggle("rotate-180");
     }
 
+    // Funcție pentru modalul normal (păstrată neschimbată)
     function openModal(url) {
       const iframe = document.getElementById('modal-frame');
       const modal = document.getElementById('modal');
@@ -540,6 +718,13 @@ async function askChatGPT() {
     document.getElementById('search-input').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         askChatGPT();
+      }
+    });
+
+    // Închiderea modalului browser la click pe fundal
+    document.getElementById('canva-browser-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCanvaBrowser();
       }
     });
 
