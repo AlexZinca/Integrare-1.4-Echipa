@@ -303,40 +303,6 @@
   .w-48 {
     width: 18rem;
   }
-
-  /* Stiluri pentru notificări */
-  .notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 147, 79, 0.95);
-    color: white;
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(255, 147, 79, 0.3);
-    backdrop-filter: blur(12px);
-    z-index: 1000;
-    transform: translateX(400px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .notification.show {
-    transform: translateX(0);
-  }
-
-  .external-link-indicator {
-    position: relative;
-  }
-
-  .external-link-indicator::after {
-    content: '↗';
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    font-size: 12px;
-    color: #ff934f;
-    opacity: 0.7;
-  }
   </style>
   <script defer>
 async function askChatGPT() {
@@ -373,38 +339,6 @@ async function askChatGPT() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    }
-
-    function showNotification(message, type = 'info') {
-      const notification = document.createElement('div');
-      notification.className = `notification ${type}`;
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => notification.classList.add('show'), 100);
-      
-      setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => document.body.removeChild(notification), 400);
-      }, 3000);
-    }
-
-    function handleCanvaLink() {
-      const canvaUrl = 'https://www.canva.com/design/DAGnz4W251M/vHmC4cY1fa0033PBfHWX8A/view?utm_content=DAGnz4W251M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1a5d18f1ee';
-      
-      // Încearcă să deschidă într-un tab nou
-      const newWindow = window.open(canvaUrl, '_blank');
-      
-      if (newWindow) {
-        showNotification('Link-ul Canva s-a deschis într-un tab nou!', 'success');
-      } else {
-        // Fallback - copiază link-ul în clipboard
-        navigator.clipboard.writeText(canvaUrl).then(() => {
-          showNotification('Link-ul a fost copiat în clipboard! Deschide-l manual în browser.', 'info');
-        }).catch(() => {
-          showNotification('Nu s-a putut deschide link-ul. Încearcă să-l accesezi direct.', 'warning');
-        });
-      }
     }
   </script>
 </head>
@@ -475,11 +409,11 @@ async function askChatGPT() {
           </div>
 
           <div class="glass-card rounded-xl overflow-hidden">
-            <div class="section-card" onclick="handleCanvaLink()">
-              <h3 class="text-lg font-medium text-gray-800 external-link-indicator">Secțiunea 1.4.2</h3>
-              <div class="download-icon" onclick="event.stopPropagation(); handleCanvaLink()">
+            <div class="section-card" onclick="openModal('https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/AlexZinca/Integrare-1.4/raw/main/1_4_3_.pptx')">
+              <h3 class="text-lg font-medium text-gray-800">Secțiunea 1.4.2</h3>
+              <div class="download-icon" onclick="event.stopPropagation(); downloadPDF('https://github.com/AlexZinca/Integrare-1.4/raw/main/1_4_3_.pptx', 'Secțiunea 1.4.3.pptx')">
                 <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
               </div>
             </div>
@@ -500,7 +434,7 @@ async function askChatGPT() {
     </div>
   </div>
 
-  <!-- Modal universal (doar pentru link-uri care funcționează în iframe) -->
+  <!-- Modal universal -->
   <div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
     <div class="modal-content w-11/12 h-5/6 rounded-2xl relative overflow-hidden shadow-2xl">
       <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 bg-white/90 backdrop-blur-sm rounded-full w-10 h-10 flex items-center justify-center shadow-lg z-10 transition-all hover:scale-110 font-bold text-xl">×</button>
