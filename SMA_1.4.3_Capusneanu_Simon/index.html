@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>1.4.3 Contractele electronice – E-contract</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <img src="logo.png" alt="Logo" class="logo" style="width: 300px;">
+
+    <h1 style="text-align: center;">1.4.3 Contractele electronice – E-contract</h1>
+    <p style="text-indent: 2em; text-align: center;"><b>Student: Căpuşneanu Simon-David</b></p>
+    <br>
+    <div style="text-align: justify;">
+            <p style="text-indent: 2em;">Forţa motrice din spatele contractelor electronice este comerţul şi 
+domeniul afacerilor în general. Mai mult, aproape toate lucrările despre
+contractele electronice provin de la cercetători din acest domeniu. Doar în
+ultimii ani au apărut lucrări referitoare la folosirea agenţilor în industrie.</p>
+        
+            
+        </div>
+
+    <p style="text-indent: 2em; text-align: justify;">Pe măsură ce interacţiunea cu mediul de afaceri devine din ce în ce
+mai dinamică şi implică diverse companii, utilizarea contractelor clasice devine
+un factor restrictiv pentru relaţiile de afaceri. Contractele electronice pot
+îmbunătăţi eficienţa acestor relaţii. Oricum prima variantă de contract
+electronic se bazează pe transpunerea unor contracte scrise în formă
+electronică.</p>
+
+    <p> Cele mai importante puncte care trebuie avute în vedere referitor la contractele electronice sunt:</p>
+
+    <ul class="bullet-list">
+        <li onclick="toggleVisibility('meta')">meta informaţiile</li>
+        <div id="meta" class="toggle-content">
+            Deoarece contractele electronice sunt procesate de 
+agenţi artificiali şi au un conţinut divers este necesar să se includă
+informaţii adiţionale, care să ajute înţelegerea lor de către computere.
+Aceste informaţii pot fi în format XML sau orice alt format 
+potrivit pentru a furniza meta informaţii. Nu toate contractele
+electronice au şi format inteligibil pentru oameni.
+        </div>
+
+        <li onclick="toggleVisibility('structura')">structură standardizată</li>
+        <div id="structura" class="toggle-content">
+            Pentru a optimiza viteza şi eficienţa stabilirii 
+contractelor este important să fie dezvoltat un mecanism care să
+îmbunătăţească reutilizarea. Prin folosirea componentelor
+standardizate, este posibil ca acestea să fie reutilizate ori de câte ori
+este nevoie. Pot fi utilizate diferite abordări de modelare. De exemplu
+XML este un bun candidat deoarece este foarte uşor să se genereze
+documente XML şi să fie apoi procesate, în ciuda lipsei de cuvinte
+semantice. Există mai multe metode folosite în prezent:<br>
+&emsp;&emsp;o Standard Contract Clauses – SCC;<br>&emsp;&emsp;o Contract Templates – CT;<br>&emsp;&emsp;o Standard Form Contracts – SFC;<br>&emsp;&emsp;o Partially Filled Contracts – PFC.
+        </div>
+
+        <li onclick="toggleVisibility('parti')">părţi implicate</li>
+        <div id="parti" class="toggle-content">
+            Contractele electronice se pot desfăşura între calculatoare sau între calculatoare şi oameni. Acest aspect implică 
+negocierea directă între părţi sau folosirea unor intermediari. În cazul
+SM-ALFAr au fost folosite două abordări. Unele contracte sunt
+negociate direct, altele folosesc brokeri ca intermediari.
+            
+        </div>
+
+        <li onclick="toggleVisibility('topologie')">topologia negocierii</li>
+        <div id="topologie" class="toggle-content">
+            Situaţiile posibile de contractare sunt: <br>
+&emsp;&emsp;o unul la unul;<br>&emsp;&emsp;o mulţi la mulţi;<br>&emsp;&emsp;o unul la mulţi;<br>&emsp;&emsp;o topologie mixtă (combinaţie a situaţiilor de mai sus).
+        </div>
+
+        <li onclick="toggleVisibility('ontologii')">ontologii</li>
+        <div id="ontologii" class="toggle-content">
+            Ontologiile sub care se aplică conceptele contractuale
+trebuie să fie totdeauna definite, înţelese şi interpretate.
+        </div>
+    </ul>
+
+    <button id="nextPage" onclick="window.location.href='pagina2.html'">Pagina 2</button>
+</body>
+</html>

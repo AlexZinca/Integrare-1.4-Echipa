@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina 2 - Protocoale și organizații</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <p>Protocoalele, specificaţiile limbajelor, cadrul de lucru şi organizaţiile relevante pentru contractele electronice sunt:</p>
+
+    <ul class="bullet-list">
+        <li onclick="toggleVisibility('un_cefact')">UN/CEFACT</li>
+        <div id="un_cefact" class="toggle-content">
+            Reprezintă soluţia Naţiunilor Unite pentru globalizarea 
+procesului de producţie. Un standard cunoscut care a fost 
+dezvoltat pe baza acestui organism este EDIFACT care este un
+standard des utilizat pentru pentru schimbul de date electronice.
+            
+        </div>
+
+        <li onclick="toggleVisibility('oasis')">Organisation for Advancement of Structured Information Standard OASIS</li>
+        <div id="oasis" class="toggle-content">
+            Este o organizaţie non-profit a cărei misiune este de a 
+direcţiona cercetarea, convergenţa şi adoptarea structurilor
+standardelor în domeniul e-business, servicii web, etc 
+<a href="https://www.oasis-open.org" target="_blank">www.oasisopen.org</a>.
+        </div>
+
+        <li onclick="toggleVisibility('commercenet')">CommerceNet</li>
+        <div id="commercenet" class="toggle-content">
+            Este o reţea deschisă interoperabilă legată de multe 
+comunităţi de comerţ printr-un cadru cu arhitectură comună.
+        </div>
+
+        <li onclick="toggleVisibility('xmledi')">XML/EDI Group</li>
+        <div id="xmledi" class="toggle-content">
+            Este un grup care încearcă să combine avantajele
+standardelor de tip EDI (Electronic Data Interchange) cu avantajele
+utilizării www <a href="http://www.xmledigroup.org" target="_blank">www.xmledigroup.org</a>.
+        </div>
+
+        <li onclick="toggleVisibility('tpaml')">Trading Partners Agreement Markup Language tpaML</li>
+        <div id="tpaml" class="toggle-content">
+            Aceste specificaţii dau posibilitatea companiilor de a-şi standardiza
+contractele cu partenerii lor.
+        </div>
+
+        <li onclick="toggleVisibility('xcbl')">XML Common Business Library xCBL</li>
+        <div id="xcbl" class="toggle-content">
+            Este un set de blocuri XML 
+care permit crearea unor documente robuste şi reutilizabile.
+        </div>
+
+        <li onclick="toggleVisibility('ubl')">Universal Business Language UBL</li>
+        <div id="ubl" class="toggle-content">
+            Este un comitet tehnic al OASIS. 
+UBL şi tinde să devină un standard internaţional pentru comerţul 
+electronic disponibil gratuit.
+        </div>
+
+        <li onclick="toggleVisibility('ebxml')">Electronic Business XML ebXML</li>
+        <div id="ebxml" class="toggle-content">
+            Este sponsorizat de UN/CEFACT 
+şi OASIS. Este un pachet modular de specificaţii care dau posibilitatea
+companiilor distribuite de a conduce afacerile pe Internet.
+        </div>
+    </ul>
+
+    <button id="prevPage" onclick="window.location.href='index.html'">Pagina 1</button>
+    <button id="nextPage" onclick="window.location.href='pagina3.html'">Pagina 3</button>
+</body>
+</html>

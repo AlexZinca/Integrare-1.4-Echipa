@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina 3 - Domenii de cercetare</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <p>Următoarele domenii au fost active în cercetarea contractelor:</p>
+
+    <ul class="bullet-list">
+        <li onclick="toggleVisibility('cadru')">contract cadru generic</li>
+        <div id="cadru" class="toggle-content">
+            Acest topic acoperă aspecte legate de 
+descrierea generală a contractelor.
+        </div>
+
+        <li onclick="toggleVisibility('negociere')">negocierea</li>
+        <div id="negociere" class="toggle-content">
+            Acoperă lucrările referitoare la aspectele negocierii din 
+domeniul multiagent. Cele mai multe negocieri în contractele
+electronice urmează teoria licitaţiei.
+            
+        </div>
+
+        <li onclick="toggleVisibility('ciclu')">ciclul de viaţă al contractului</li>
+        <div id="ciclu" class="toggle-content">
+            Acoperă lucrările dedicate ciclului de 
+viaţă al contractelor.
+            
+        </div>
+
+        <li onclick="toggleVisibility('modelare')">modelarea contractelor</li>
+        <div id="modelare" class="toggle-content">
+            Anumite lucrări precizează faptul că cele mai 
+multe contracte sunt modelate XML sau UML. Deasemenea se utilizează
+reţelele Petri pentru a captura aspectele dinamice temporale.
+        </div>
+
+        <li onclick="toggleVisibility('implementare')">implementarea</li>
+        <div id="implementare" class="toggle-content">
+            Acoperă implementările specifice ale contractelor.
+        </div>
+
+        <li onclick="toggleVisibility('executie')">execuţia contractelor</li>
+        <div id="executie" class="toggle-content">
+            Prezintă metode manuale sau automate de execuţie a contractelor.
+        </div>
+
+        <li onclick="toggleVisibility('limbaje')">limbaje formale pentru contracte</li>
+        <div id="limbaje" class="toggle-content">
+            Acoperă domeniul limbajelor formale dedicate contractelor.
+        </div>
+    </ul>
+
+    <button id="prevPage" onclick="window.location.href='pagina2.html'">Pagina 2</button>
+</body>
+</html>
