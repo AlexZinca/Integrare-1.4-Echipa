@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ro">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,123 +8,173 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      33% { transform: translateY(-20px) rotate(120deg); }
-      66% { transform: translateY(-10px) rotate(240deg); }
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      33% {
+        transform: translateY(-20px) rotate(120deg);
+      }
+
+      66% {
+        transform: translateY(-10px) rotate(240deg);
+      }
     }
-    
+
     @keyframes sparkle {
-      0%, 100% { 
-        opacity: 0; 
-        transform: scale(0) rotate(0deg); 
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
       }
-      50% { 
-        opacity: 1; 
-        transform: scale(1) rotate(180deg); 
+
+      50% {
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
       }
     }
-    
+
     @keyframes pulse {
-      0%, 100% { 
-        opacity: 0.4; 
-        transform: scale(0.8); 
+
+      0%,
+      100% {
+        opacity: 0.4;
+        transform: scale(0.8);
       }
-      50% { 
-        opacity: 0.8; 
-        transform: scale(1.2); 
+
+      50% {
+        opacity: 0.8;
+        transform: scale(1.2);
       }
     }
-    
+
     @keyframes drift {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(50px, -30px) rotate(90deg); }
-      50% { transform: translate(-30px, -60px) rotate(180deg); }
-      75% { transform: translate(-60px, -20px) rotate(270deg); }
-      100% { transform: translate(0, 0) rotate(360deg); }
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      25% {
+        transform: translate(50px, -30px) rotate(90deg);
+      }
+
+      50% {
+        transform: translate(-30px, -60px) rotate(180deg);
+      }
+
+      75% {
+        transform: translate(-60px, -20px) rotate(270deg);
+      }
+
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+      }
     }
-    
+
     @keyframes searchGlow {
-      0%, 100% {
-        box-shadow: 
+
+      0%,
+      100% {
+        box-shadow:
           0 0 20px rgba(255, 147, 79, 0.3),
           0 0 40px rgba(255, 147, 79, 0.1),
           inset 0 1px 0 rgba(255, 255, 255, 0.2);
       }
+
       50% {
-        box-shadow: 
+        box-shadow:
           0 0 30px rgba(255, 147, 79, 0.5),
           0 0 60px rgba(255, 147, 79, 0.2),
           0 0 90px rgba(255, 147, 79, 0.1),
           inset 0 1px 0 rgba(255, 255, 255, 0.3);
       }
     }
-    
+
     .text-gray-700 {
-    --tw-text-opacity: 1;
-    color: rgb(98 103 111);
-    font-size: 14px;
-}
+      --tw-text-opacity: 1;
+      color: rgb(98 103 111);
+      font-size: 14px;
+    }
+
     .floating-element {
       position: absolute;
       border-radius: 50%;
       background: linear-gradient(45deg, #ff934f, #ffb380);
       opacity: 0.6;
     }
-    
+
     .float-1 {
-      width: 8px; height: 8px;
-      top: 15%; left: 10%;
+      width: 8px;
+      height: 8px;
+      top: 15%;
+      left: 10%;
       animation: float 6s ease-in-out infinite;
     }
-    
+
     .float-2 {
-      width: 12px; height: 12px;
-      top: 25%; right: 15%;
+      width: 12px;
+      height: 12px;
+      top: 25%;
+      right: 15%;
       animation: float 8s ease-in-out infinite reverse;
       animation-delay: -2s;
     }
-    
+
     .float-3 {
-      width: 6px; height: 6px;
-      bottom: 30%; left: 20%;
+      width: 6px;
+      height: 6px;
+      bottom: 30%;
+      left: 20%;
       animation: drift 10s linear infinite;
       animation-delay: -4s;
     }
-    
+
     .float-4 {
-      width: 10px; height: 10px;
-      top: 60%; right: 25%;
+      width: 10px;
+      height: 10px;
+      top: 60%;
+      right: 25%;
       animation: pulse 4s ease-in-out infinite;
       animation-delay: -1s;
     }
-    
+
     .float-5 {
-      width: 14px; height: 14px;
-      bottom: 20%; right: 10%;
+      width: 14px;
+      height: 14px;
+      bottom: 20%;
+      right: 10%;
       animation: sparkle 5s ease-in-out infinite;
       animation-delay: -3s;
     }
-    
+
     .float-6 {
-      width: 7px; height: 7px;
-      top: 40%; left: 5%;
+      width: 7px;
+      height: 7px;
+      top: 40%;
+      left: 5%;
       animation: drift 12s linear infinite reverse;
     }
-    
+
     .float-7 {
-      width: 9px; height: 9px;
-      top: 70%; left: 30%;
+      width: 9px;
+      height: 9px;
+      top: 70%;
+      left: 30%;
       animation: float 7s ease-in-out infinite;
       animation-delay: -5s;
     }
-    
+
     .float-8 {
-      width: 11px; height: 11px;
-      bottom: 40%; right: 30%;
+      width: 11px;
+      height: 11px;
+      bottom: 40%;
+      right: 30%;
       animation: pulse 6s ease-in-out infinite;
       animation-delay: -2.5s;
     }
-    
+
     .search-container {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
@@ -131,17 +182,17 @@
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       animation: none;
     }
-    
+
     .search-container:focus-within {
       animation: none;
       border-color: rgba(255, 147, 79, 0.6);
-      box-shadow: 
+      box-shadow:
         0 0 40px rgba(255, 147, 79, 0.4),
         0 0 80px rgba(255, 147, 79, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
     }
-    
+
     .search-input {
       background: transparent;
       border: none;
@@ -149,12 +200,12 @@
       font-size: 16px;
       color: #374151;
     }
-    
+
     .search-input::placeholder {
       color: #9CA3AF;
       font-weight: 300;
     }
-    
+
     .search-button {
       background: linear-gradient(135deg, #ff934f, #ffb380);
       border: none;
@@ -168,42 +219,42 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 12px rgba(255, 147, 79, 0.3);
     }
-    
+
     .search-button:hover {
       background: linear-gradient(135deg, #f97316, #ff934f);
       transform: translateY(-1px);
       box-shadow: 0 6px 16px rgba(255, 147, 79, 0.4);
     }
-    
+
     .search-button:active {
       transform: translateY(0px);
     }
-    
+
     .glass-card {
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 147, 79, 0.15);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     .glass-card:hover {
       background: rgba(255, 255, 255, 0.9);
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(255, 147, 79, 0.15);
       border-color: rgba(255, 147, 79, 0.3);
     }
-    
+
     .description-toggle {
       background: rgba(255, 147, 79, 0.05);
       border: 1px solid rgba(255, 147, 79, 0.15);
       transition: all 0.3s ease;
     }
-    
+
     .description-toggle:hover {
       background: rgba(255, 147, 79, 0.1);
       border-color: rgba(255, 147, 79, 0.25);
     }
-    
+
     .section-card {
       height: 80px;
       display: flex;
@@ -214,7 +265,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .section-card::before {
       content: '';
       position: absolute;
@@ -225,11 +276,11 @@
       background: linear-gradient(90deg, transparent, rgba(255, 147, 79, 0.1), transparent);
       transition: left 0.6s ease;
     }
-    
+
     .section-card:hover::before {
       left: 100%;
     }
-    
+
     .download-icon {
       opacity: 0.6;
       transition: all 0.3s ease;
@@ -237,47 +288,48 @@
       border-radius: 8px;
       background: rgba(255, 147, 79, 0.1);
     }
-    
+
     .download-icon:hover {
       opacity: 1;
       background: rgba(255, 147, 79, 0.2);
       transform: scale(1.1);
     }
-    
+
     .modal-content {
       background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 147, 79, 0.2);
     }
-    
+
     .chat-response {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 147, 79, 0.2);
       box-shadow: 0 8px 25px rgba(255, 147, 79, 0.1);
     }
-    
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
         transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-    
+
     .fade-in-up {
       animation: fadeInUp 0.6s ease-out forwards;
     }
-    
+
     .grid-layout {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
       gap: 16px;
     }
-    
+
     @media (max-width: 768px) {
       .grid-layout {
         grid-template-columns: 1fr;
@@ -290,46 +342,48 @@
 
     .max-w-4xl {
       max-width: 52rem;
-  }
-  .max-w-2xl {
-    max-width: 52rem;
-  }
-  body {
-    font-family: inherit;
-    line-height: inherit;
-    background-color: whitesmoke;
-  }
+    }
 
-  .w-48 {
-    width: 18rem;
-  }
+    .max-w-2xl {
+      max-width: 52rem;
+    }
+
+    body {
+      font-family: inherit;
+      line-height: inherit;
+      background-color: whitesmoke;
+    }
+
+    .w-48 {
+      width: 18rem;
+    }
   </style>
   <script defer>
-async function askChatGPT() {
-  const query = document.getElementById("search-input").value;
-  if (!query.trim()) return;
+    async function askChatGPT() {
+      const query = document.getElementById("search-input").value;
+      if (!query.trim()) return;
 
-  const output = document.getElementById("chatgpt-answer");
-  output.textContent = "Se generează răspunsul...";
-  output.classList.remove("hidden");
+      const output = document.getElementById("chatgpt-answer");
+      output.textContent = "Se generează răspunsul...";
+      output.classList.remove("hidden");
 
-  try {
-    const res = await fetch("https://integrare-1-4-2.onrender.com/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: query })
-    });
+      try {
+        const res = await fetch("https://integrare-1-4-2.onrender.com/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: query })
+        });
 
-    const data = await res.json();
-    console.log("REZ GPT:", data);
-    output.textContent = data.reply || "Nu s-a putut obține răspunsul.";
-  } catch (e) {
-    output.textContent = "Eroare la comunicarea cu ChatGPT.";
-    console.error("Eroare fetch:", e);
-  }
-}
+        const data = await res.json();
+        console.log("REZ GPT:", data);
+        output.textContent = data.reply || "Nu s-a putut obține răspunsul.";
+      } catch (e) {
+        output.textContent = "Eroare la comunicarea cu ChatGPT.";
+        console.error("Eroare fetch:", e);
+      }
+    }
 
     function downloadPDF(url, filename) {
       const link = document.createElement('a');
@@ -342,6 +396,7 @@ async function askChatGPT() {
     }
   </script>
 </head>
+
 <body class="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 relative overflow-x-hidden">
   <!-- Enhanced floating background animations -->
   <div class="floating-element float-1"></div>
@@ -356,13 +411,14 @@ async function askChatGPT() {
   <!-- Header cu logo -->
   <div class="flex items-center px-6 py-4 bg-white/70 backdrop-blur-md">
     <a href="https://www.unitbv.ro/" target="_blank" rel="noopener noreferrer">
-      <img src="https://alexzinca.github.io/Integrare-1.4/unitbv.png" alt="Universitatea Transilvania din Brașov" class="w-48 h-auto">
+      <img src="https://alexzinca.github.io/Integrare-1.4/unitbv.png" alt="Universitatea Transilvania din Brașov"
+        class="w-48 h-auto">
     </a>
   </div>
 
   <!-- Conținutul principal -->
   <div class="max-w-4xl mx-auto px-6 py-8">
-    
+
     <!-- Titlu principal -->
     <div class="text-center mb-8 fade-in-up">
       <h1 class="text-5xl font-light text-gray-800 mb-3">1.4 CONTRACTELE</h1>
@@ -373,12 +429,8 @@ async function askChatGPT() {
     <div class="mb-12 fade-in-up" style="animation-delay: 0.2s">
       <div class="search-container rounded-xl p-2 max-w-2xl mx-auto">
         <div class="flex items-center gap-4">
-          <input 
-            id="search-input" 
-            type="text" 
-            placeholder="Pune o întrebare despre contracte..." 
-            class="search-input flex-grow py-2 px-2 text-gray-700"
-          >
+          <input id="search-input" type="text" placeholder="Pune o întrebare despre contracte..."
+            class="search-input flex-grow py-2 px-2 text-gray-700">
           <button onclick="askChatGPT()" class="search-button">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -391,40 +443,56 @@ async function askChatGPT() {
 
     <!-- Container principal cu layout grid -->
     <div class="glass-card rounded-2xl p-8 fade-in-up" style="animation-delay: 0.4s">
-      
-     
+
+
       <!-- Secțiuni disponibile -->
       <div>
         <h2 class="text-2xl font-medium text-gray-800 mb-6 text-center"></h2>
         <div class="grid-layout">
           <div class="glass-card rounded-xl overflow-hidden">
-            <div class="section-card" onclick="openModal('https://alexzinca.github.io/Integrare-1.4-Echipa/prezentare-SMA/prezentare.html')">
+            <div class="section-card"
+              onclick="openModal('https://alexzinca.github.io/Integrare-1.4-Echipa/prezentare-SMA/prezentare.html')">
               <h3 class="text-lg font-medium text-gray-800">Secțiuni 1.4-1.4.1</h3>
-              <div class="download-icon" onclick="event.stopPropagation(); window.open('https://alexzinca.github.io/Integrare-1.4-Echipa/prezentare-SMA/prezentare.html', '_blank')">
-                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              <h5 class="text-lg font-medium text-gray-800">Descrierea - Baza legală</h5>
+              <div class="download-icon"
+                onclick="event.stopPropagation(); window.open('https://alexzinca.github.io/Integrare-1.4-Echipa/prezentare-SMA/prezentare.html', '_blank')">
+                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.5"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
               </div>
             </div>
           </div>
 
           <div class="glass-card rounded-xl overflow-hidden">
-            <div class="section-card" onclick="openModal('https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/AlexZinca/Integrare_1.4_Echipa/raw/main/Black%20Green%20Simple%20Modern%20Artificial%20Intelligence%20Presentation(1).pptx')">
+            <div class="section-card"
+              onclick="openModal('https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/AlexZinca/Integrare-1.4-Echipa/raw/main/Black%20Green%20Simple%20Modern%20Artificial%20Intelligence%20Presentation(1).pptx')">
               <h3 class="text-lg font-medium text-gray-800">Secțiunea 1.4.2</h3>
-                <div class="download-icon" onclick="event.stopPropagation(); window.open('https://www.canva.com/design/DAGnz4W251M/vHmC4cY1fa0033PBfHWX8A/view?utm_content=DAGnz4W251M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1a5d18f1ee', '_blank')">
-                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              <h5 class="text-lg font-medium text-gray-800">Influența computerelor în schimbarea legilor</h5>
+              <div class="download-icon"
+                onclick="event.stopPropagation(); window.open('https://www.canva.com/design/DAGnz4W251M/vHmC4cY1fa0033PBfHWX8A/view?utm_content=DAGnz4W251M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1a5d18f1ee', '_blank')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M18 13v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14" />
                 </svg>
               </div>
             </div>
           </div>
 
+
           <div class="glass-card rounded-xl overflow-hidden">
-            <div class="section-card" onclick="openModal('https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/AlexZinca/Integrare-1.4/raw/main/1_4_3_.pptx')">
+            <div class="section-card"
+              onclick="openModal('https://view.officeapps.live.com/op/embed.aspx?src=https://github.com/AlexZinca/Integrare-1.4-Echipa/raw/main/Black%20Green%20Simple%20Modern%20Artificial%20Intelligence%20Presentation(1).pptx')">
               <h3 class="text-lg font-medium text-gray-800">Secțiunea 1.4.3</h3>
-              <div class="download-icon" onclick="event.stopPropagation(); downloadPDF('https://github.com/AlexZinca/Integrare-1.4/raw/main/1_4_3_.pptx', 'Secțiunea 1.4.3.pptx')">
-                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              <h5 class="text-lg font-medium text-gray-800">Contractele electronice - E-contract</h5>
+              <div class="download-icon"
+                onclick="event.stopPropagation(); downloadPDF('https://github.com/AlexZinca/Integrare-1.4/raw/main/1_4_3_.pptx', 'Secțiunea 1.4.3.pptx')">
+                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.5"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
               </div>
             </div>
@@ -437,7 +505,8 @@ async function askChatGPT() {
   <!-- Modal universal -->
   <div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center hidden z-50">
     <div class="modal-content w-11/12 h-5/6 rounded-2xl relative overflow-hidden shadow-2xl">
-      <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 bg-white/90 backdrop-blur-sm rounded-full w-10 h-10 flex items-center justify-center shadow-lg z-10 transition-all hover:scale-110 font-bold text-xl">×</button>
+      <button onclick="closeModal()"
+        class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 bg-white/90 backdrop-blur-sm rounded-full w-10 h-10 flex items-center justify-center shadow-lg z-10 transition-all hover:scale-110 font-bold text-xl">×</button>
       <iframe id="modal-frame" class="w-full h-full rounded-2xl" frameborder="0"></iframe>
     </div>
   </div>
@@ -471,7 +540,7 @@ async function askChatGPT() {
     }
 
     // Enhanced keyboard support
-    document.getElementById('search-input').addEventListener('keypress', function(e) {
+    document.getElementById('search-input').addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
         askChatGPT();
       }
@@ -489,4 +558,5 @@ async function askChatGPT() {
     });
   </script>
 </body>
+
 </html>
